@@ -1,7 +1,8 @@
 const server = require('express')()         // sets up an express instance and returns a callback function
-// const db = require('../../data/db')
+const db = require('../../data/db')
 // const helpers = require('../helpers/helpers')
 var simplecrypt = require("simplecrypt");
+const jwt = require('jsonwebtoken');
 
 var sc = simplecrypt();
 
@@ -13,7 +14,28 @@ server.get('/', (req, res) => {
     res.json("App is currently functioning")
 })
 
+server.post('/login', (req, res) => {
 
+    let { username, password } = req.body
+
+    try{
+        db('Users')
+            .where({ username })
+            .first()
+            .then(user => {
+                if(user){
+                    decryptedPassword = sc.decrypt(user.password);
+                    if(decryptedPassword === password){
+
+                    }
+                }
+            })
+    }
+})
+
+server.get('/:userId')
 
 
 module.exports = server
+
+
