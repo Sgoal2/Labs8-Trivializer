@@ -1,10 +1,14 @@
 import React from "react";
+import Navbar from "./Navbar";
 
 const Billing = () => {
   return (
-    <React.Fragment>
-      <div>Billing Page</div>
-    </React.Fragment>
+    <div className="billing-page">
+      <Navbar />
+      <div className="main-content">
+        <h1>Billing Page</h1>
+      </div>
+    </div>
   );
 };
 

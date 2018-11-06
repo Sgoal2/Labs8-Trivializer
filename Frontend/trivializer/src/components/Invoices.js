@@ -1,15 +1,15 @@
 import React from "react";
 import Navbar from "./Navbar";
 
-const Setting = () => {
+const Invoices = () => {
   return (
-    <div className="setting-page">
+    <div className="invoices-page">
       <Navbar />
       <div className="main-content">
-        <h1 className="title">Setting Page</h1>
+        <h1>Invoices Page</h1>
       </div>
     </div>
   );
 };
 
-export default Setting;
+export default Invoices;

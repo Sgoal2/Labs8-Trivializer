@@ -14,7 +14,10 @@
   margin-top: 10%;
 }
 
-.gameslist-page {
+.gameslist-page,
+.billing-page,
+.invoices-page,
+.setting-page {
   display: flex;
 }
 
