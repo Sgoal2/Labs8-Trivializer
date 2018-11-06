@@ -13,7 +13,9 @@ server.get('/', (req, res) => {
     res.json("App is currently functioning")
 })
 
-
+server.post('/register', (req, res) => {
+    
+})
 
 
 module.exports = server
