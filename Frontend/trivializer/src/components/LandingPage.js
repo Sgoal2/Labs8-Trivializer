@@ -7,6 +7,11 @@ class LandingPage extends React.Component {
     super();
     this.state = {};
   }
+  redirect = () => {
+    // Note from nicky: This redirect function, and the reload in it, is here because I was using <Link> before, and whenever I clicked it to direct it to /gameslist, the background would stay blurred as if the modal is still open. If there's a better fix for it, please let me know :)
+    window.location.reload();
+    this.props.history.push("/gameslist");
+  };
   render() {
     return (
       <React.Fragment>
@@ -24,7 +29,7 @@ class LandingPage extends React.Component {
             <div
               className="modal fade"
               id="exampleModal"
-              tabindex="-1"
+              tabIndex="-1"
               role="dialog"
               aria-labelledby="exampleModalLabel"
               aria-hidden="true"
@@ -51,8 +56,8 @@ class LandingPage extends React.Component {
                     <button type="button" className="btn btn-secondary" data-dismiss="modal">
                       Close
                     </button>
-                    <button type="button" className="btn btn-primary">
-                      Save changes
+                    <button onClick={this.redirect} type="button" className="btn btn-primary">
+                      Create My Account
                     </button>
                   </div>
                 </div>
@@ -99,8 +104,8 @@ class LandingPage extends React.Component {
                     <button type="button" className="btn btn-secondary" data-dismiss="modal">
                       Close
                     </button>
-                    <button type="button" className="btn btn-primary">
-                      Save changes
+                    <button onClick={this.redirect} className="btn btn-primary">
+                      Sign In
                     </button>
                   </div>
                 </div>
@@ -121,7 +126,7 @@ class LandingPage extends React.Component {
                 Users who register get a welcome email and can reset their password via email as
                 well.
               </p>
-              <Link className="btn btn-primary" to="/billing">
+              <Link to="/billing" className="btn btn-primary">
                 Buy Now
               </Link>
             </div>

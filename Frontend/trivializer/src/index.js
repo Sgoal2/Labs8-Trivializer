@@ -7,10 +7,8 @@ import { createStore } from "redux";
 import { BrowserRouter as Router } from "react-router-dom";
 
 ReactDOM.render(
-  <Provider>
-    <Router>
-      <App />
-    </Router>
-  </Provider>,
+  <Router>
+    <App />
+  </Router>,
   document.getElementById("root")
 );
