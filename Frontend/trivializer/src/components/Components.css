@@ -1,0 +1,15 @@
+.landingpage-top {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.signup-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.main-text {
+  width: 25%;
+  margin: 0 auto;
+  margin-top: 10%;
+}
