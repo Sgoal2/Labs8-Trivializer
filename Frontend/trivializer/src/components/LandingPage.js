@@ -21,14 +21,14 @@ class LandingPage extends React.Component {
               type="button"
               className="btn btn-primary"
               data-toggle="modal"
-              data-target="#exampleModal"
+              data-target="#signup"
             >
               Sign Up
             </button>
 
             <div
               className="modal fade"
-              id="exampleModal"
+              id="signup"
               tabIndex="-1"
               role="dialog"
               aria-labelledby="exampleModalLabel"
@@ -69,14 +69,14 @@ class LandingPage extends React.Component {
               type="button"
               className="btn btn-primary"
               data-toggle="modal"
-              data-target="#exampleModal"
+              data-target="#signin"
             >
               Sign In
             </button>
 
             <div
               className="modal fade"
-              id="exampleModal"
+              id="signin"
               tabindex="-1"
               role="dialog"
               aria-labelledby="exampleModalLabel"
@@ -95,9 +95,7 @@ class LandingPage extends React.Component {
                   <div className="modal-body">
                     <form className="signup-body">
                       <input placeholder="username" />
-                      <input placeholder="email" />
                       <input placeholder="password" />
-                      <input placeholder="please confirm password" />
                     </form>
                   </div>
                   <div className="modal-footer">
