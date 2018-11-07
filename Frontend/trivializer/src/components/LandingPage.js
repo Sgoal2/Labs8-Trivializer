@@ -1,11 +1,17 @@
 import React from "react";
 import "./Components.css";
+import { Link } from "react-router-dom";
 
 class LandingPage extends React.Component {
   constructor() {
     super();
     this.state = {};
   }
+  redirect = () => {
+    // Note from nicky: This redirect function, and the reload in it, is here because I was using <Link> before, and whenever I clicked it to direct it to /gameslist, the background would stay blurred as if the modal is still open. If there's a better fix for it, please let me know :)
+    window.location.reload();
+    this.props.history.push("/gameslist");
+  };
   render() {
     return (
       <React.Fragment>
@@ -13,7 +19,7 @@ class LandingPage extends React.Component {
           <div className="signup">
             <button
               type="button"
-              class="btn btn-primary"
+              className="btn btn-primary"
               data-toggle="modal"
               data-target="#exampleModal"
             >
@@ -21,24 +27,24 @@ class LandingPage extends React.Component {
             </button>
 
             <div
-              class="modal fade"
+              className="modal fade"
               id="exampleModal"
-              tabindex="-1"
+              tabIndex="-1"
               role="dialog"
               aria-labelledby="exampleModalLabel"
               aria-hidden="true"
             >
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">
+              <div className="modal-dialog" role="document">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h5 className="modal-title" id="exampleModalLabel">
                       Sign up for an account below
                     </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
-                  <div class="modal-body">
+                  <div className="modal-body">
                     <form className="signup-body">
                       <input placeholder="username" />
                       <input placeholder="email" />
@@ -46,12 +52,12 @@ class LandingPage extends React.Component {
                       <input placeholder="please confirm password" />
                     </form>
                   </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                  <div className="modal-footer">
+                    <button type="button" className="btn btn-secondary" data-dismiss="modal">
                       Close
                     </button>
-                    <button type="button" class="btn btn-primary">
-                      Save changes
+                    <button onClick={this.redirect} type="button" className="btn btn-primary">
+                      Create My Account
                     </button>
                   </div>
                 </div>
@@ -61,7 +67,7 @@ class LandingPage extends React.Component {
           <div className="signin">
             <button
               type="button"
-              class="btn btn-primary"
+              className="btn btn-primary"
               data-toggle="modal"
               data-target="#exampleModal"
             >
@@ -69,24 +75,24 @@ class LandingPage extends React.Component {
             </button>
 
             <div
-              class="modal fade"
+              className="modal fade"
               id="exampleModal"
               tabindex="-1"
               role="dialog"
               aria-labelledby="exampleModalLabel"
               aria-hidden="true"
             >
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">
+              <div className="modal-dialog" role="document">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h5 className="modal-title" id="exampleModalLabel">
                       Login Below
                     </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
-                  <div class="modal-body">
+                  <div className="modal-body">
                     <form className="signup-body">
                       <input placeholder="username" />
                       <input placeholder="email" />
@@ -94,12 +100,12 @@ class LandingPage extends React.Component {
                       <input placeholder="please confirm password" />
                     </form>
                   </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                  <div className="modal-footer">
+                    <button type="button" className="btn btn-secondary" data-dismiss="modal">
                       Close
                     </button>
-                    <button type="button" class="btn btn-primary">
-                      Save changes
+                    <button onClick={this.redirect} className="btn btn-primary">
+                      Sign In
                     </button>
                   </div>
                 </div>
@@ -108,10 +114,10 @@ class LandingPage extends React.Component {
           </div>
         </div>
         <div className="landingpage main">
-          <div class="main-text card">
-            <div class="card-body">
-              <h5 class="card-title">Welcome to Bar Trivia</h5>
-              <p class="card-text">
+          <div className="main-text card">
+            <div className="card-body">
+              <h5 className="card-title">Welcome to Bar Trivia</h5>
+              <p className="card-text">
                 Trivializer helps bar trivia hosts create their question sets and answer sheets by
                 pulling from a large and free API of trivia questions. There are free and paid tiers
                 of the app.
@@ -120,9 +126,9 @@ class LandingPage extends React.Component {
                 Users who register get a welcome email and can reset their password via email as
                 well.
               </p>
-              <a href="#" class="btn btn-primary">
+              <Link to="/billing" className="btn btn-primary">
                 Buy Now
-              </a>
+              </Link>
             </div>
           </div>
         </div>
