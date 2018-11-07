@@ -6,8 +6,13 @@ import GamesList from "./components/GamesList";
 import Setting from "./components/Setting";
 import Invoices from "./components/Invoices";
 import { Route } from "react-router-dom";
+import { connect } from "react-redux";
+import { fetchReq } from "./actions";
 
 class App extends Component {
+  componentDidMount() {
+    this.props.fetchReq();
+  }
   render() {
     return (
       <div className="App">
@@ -21,4 +26,14 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+    return {
+        questions: state.questions,
+        fetched: state.fetched
+    };
+};
+
+export default connect(
+    mapStateToProps,
+    { fetchReq }
+)(App);
