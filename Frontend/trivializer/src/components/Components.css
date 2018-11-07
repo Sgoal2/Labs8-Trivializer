@@ -1,0 +1,38 @@
+.landingpage-top {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.signup-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.main-text {
+  width: 25%;
+  margin: 0 auto;
+  margin-top: 10%;
+}
+
+.gameslist-page,
+.billing-page,
+.invoices-page,
+.setting-page {
+  display: flex;
+}
+
+.navbar {
+  width: 10%;
+  border: 2px solid black;
+  height: 75vh;
+  margin-top: 70px;
+  margin-left: 15px;
+}
+
+.navbar li {
+  line-height: 5px;
+}
+
+.main-content {
+  width: 90%;
+}

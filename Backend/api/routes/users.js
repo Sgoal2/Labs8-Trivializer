@@ -1,17 +1,11 @@
 const server = require('express')()         // sets up an express instance and returns a callback function
 const db = require('../../data/db')
 const utilities = require('../util/utilities');
+
 var simplecrypt = require("simplecrypt");
+const jwt = require('jsonwebtoken');
 
 var sc = simplecrypt({ password: process.env.SECRET });
-
-//***** An example of using encrypt/decrypt with simplecrypt *****/ 
-
-// var digest = sc.encrypt('hello');
-// console.log(digest, "\n");
-
-// var decrypted = sc.decrypt(digest);
-// console.log("decrypted: ", decrypted, "\n");
 
 
 // Base endpoint (at users/)
@@ -20,7 +14,9 @@ server.get('/', (req, res) => {
     res.json("App is currently functioning")
 })
 
+server.post('/login', (req, res) => {
 
+  
 // Add new user 
 server.post('/register', (req, res) => {
 
@@ -45,11 +41,7 @@ server.post('/register', (req, res) => {
             res.status(500).json({"error": err.message})
         })
 })
-server.get('/u', utilities.protected, (req, res) => {
-    db('Users').then(users => {
-        res.status(200).json(users)
-    }).catch(err => res.status(500).json(err))
-});
+
 
 server.post('/login', utilities.getUser, (req, res) => {
 
@@ -83,6 +75,7 @@ server.post('/login', utilities.getUser, (req, res) => {
 // Get all games for a user (db-recipe-book)
 
 // Save a game to a user (db-recipe-book)
+
 
 module.exports = server
 
