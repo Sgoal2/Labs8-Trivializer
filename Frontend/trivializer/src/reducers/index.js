@@ -1,7 +1,7 @@
 // import { FETCHING, FETCHED, ERROR } from "../actions";
 
 const initialState = {
-    games: [],
+    questions: [],
     fetching: false,
     fetched: false,
     saving: false,
