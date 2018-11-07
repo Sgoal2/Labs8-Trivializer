@@ -78,27 +78,25 @@ class LandingPage extends React.Component {
     let credentials;
     let url;
 
-    console.log("e.target.name:", e.target.name);
-
     if(e.target.name === 'register' && this.validateRegister()){
+
       credentials = { username : this.state.signup_username, password : this.state.signup_password, email : this.state.signup_email }
       url = this.state.registerURL;
-      console.log("In register");
+
     }
     else if(e.target.name === 'signin' && this.validateSignin()){
+
       credentials = { username : this.state.signin_username, password : this.state.signin_password }
       url = this.state.signinURL;
-      console.log("In signin")
+
     }
     else{
       return;
     }
 
-    console.log("credentials: ", credentials, "url: ", url);
-
     axios.post(url, { username: credentials.username, password: credentials.password, email: credentials.email || '' })
       .then(res => {
-        console.log("response", res);
+
         const token = res.data;
 
         sessionStorage.setItem('jwt', token)
