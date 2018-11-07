@@ -1,7 +1,7 @@
-// import { FETCHING, FETCHED, ERROR } from "../actions";
+import { FETCHING, FETCHED, ERROR } from "../actions";
 
 const initialState = {
-    games: [],
+    questions: [],
     fetching: false,
     fetched: false,
     saving: false,
@@ -15,6 +15,20 @@ const initialState = {
 
 export default (state = initialState, action) => {
     switch (action.type) {
+        case FETCHING:
+            return Object.assign({}, state, {
+                fetching: true
+            });
+        case FETCHED:
+            return Object.assign({}, state, {
+                fetching: false,
+                fetched: true,
+                questions: action.payload
+            });
+        case ERROR:
+            return Object.assign({}, state, {
+                error: action.payload
+            });
         default:
             return state;
     }
