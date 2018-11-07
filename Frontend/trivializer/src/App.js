@@ -1,15 +1,32 @@
 import React, { Component } from "react";
 import "./App.css";
 import LandingPage from "./components/LandingPage";
+import { connect } from "react-redux";
+import { fetchReq } from "./actions";
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <LandingPage />
-      </div>
-    );
-  }
+    // test request
+    componentDidMount() {
+        this.props.fetchReq();
+    }
+
+    render() {
+        return (
+            <div className="App">
+                <LandingPage />
+            </div>
+        );
+    }
 }
 
-export default App;
+const mapStateToProps = state => {
+    return {
+        questions: state.questions,
+        fetched: state.fetched
+    };
+};
+
+export default connect(
+    mapStateToProps,
+    { fetchReq }
+)(App);

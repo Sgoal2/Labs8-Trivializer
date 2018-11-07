@@ -11,6 +11,7 @@ export const fetchReq = () => {
         axios
             .get(`${URL}?amount=10`)
             .then(({ data }) => {
+                console.log(data);
                 dispatch({ type: FETCHED, payload: data });
             })
             .catch(err => {

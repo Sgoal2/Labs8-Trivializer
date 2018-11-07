@@ -1,4 +1,4 @@
-/* import actions */
+// import { FETCHING, FETCHED, ERROR } from "../actions";
 
 const initialState = {
     games: [],
