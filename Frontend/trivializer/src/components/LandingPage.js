@@ -26,7 +26,7 @@ class LandingPage extends React.Component {
     // Note from nicky: This redirect function, and the reload in it, is here because I was using <Link> before, and whenever I clicked it to direct it to /gameslist, the background would stay blurred as if the modal is still open. If there's a better fix for it, please let me know :)
     window.location.reload();
     this.props.history.push("/gameslist");
-    e.preventDefault();
+
   };
 
   // Sets users input to local state
@@ -158,6 +158,9 @@ class LandingPage extends React.Component {
                     <button  name="register" onClick={this.handleSubmit} type="button" className="btn btn-primary">
                       Create My Account
                     </button>
+                    {this.state.error ? (
+                      <div>{this.state.error}</div>
+                    ) : (null)}
                   </div>
                 </div>
               </div>
@@ -206,6 +209,9 @@ class LandingPage extends React.Component {
                     <button  name="signin" onClick={this.handleSubmit} className="btn btn-primary">
                       Sign In
                     </button>
+                    {this.state.error ? (
+                      <div>{this.state.error}</div>
+                    ) : (null)}
                   </div>
                 </div>
               </div>
