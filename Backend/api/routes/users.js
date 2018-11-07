@@ -45,7 +45,11 @@ server.post('/register', (req, res) => {
             res.status(500).json({"error": err.message})
         })
 })
-
+server.get('/u', utilities.protected, (req, res) => {
+    db('Users').then(users => {
+        res.status(200).json(users)
+    }).catch(err => res.status(500).json(err))
+});
 
 server.post('/login', utilities.getUser, (req, res) => {
 
