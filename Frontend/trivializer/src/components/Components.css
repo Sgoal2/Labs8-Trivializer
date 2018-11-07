@@ -14,10 +14,28 @@
   margin-top: 10%;
 }
 
+/* Page Layout goes: [page-name]-page, top-content (top-rightside, top-leftside), main-content (Navbar, main-middle)*/
+.gameslist-page,
 .billing-page,
 .invoices-page,
 .setting-page {
   display: flex;
+  flex-direction: column;
+}
+
+.top-content {
+  display: flex;
+  justify-content: space-between;
+}
+
+.top-rightside {
+  margin-right: 20px;
+}
+
+.main-content {
+  display: flex;
+  width: 90%;
+  margin-top: 20px;
 }
 
 .navbar {
@@ -31,26 +49,6 @@
   line-height: 5px;
 }
 
-.main-content {
-  display: flex;
-  width: 90%;
-  margin-top: 20px;
-}
-
-.top-content {
-  display: flex;
-  justify-content: space-between;
-}
-
-.gameslist-page {
-  display: flex;
-  flex-direction: column;
-}
-
 .main-middle {
   margin: 0 auto;
-}
-
-.top-rightside {
-  margin-right: 20px;
 }
