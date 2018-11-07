@@ -36,10 +36,11 @@ server.post('/register', (req, res) => {
 
     db('Users')                     // Hit Database table 'Users'
         .insert(credentials)        // Credentials should include at least username, password and email. No duplicate usernames allowed
-        .then(res => {
-            console.log("RESPONSE!!!: ", res);
-            res.status(200).json(res[0]);
+        .then(response => {
+            let token = utilities.generateToken(username);
+            res.status(201).json(token);
         })
+        
 .catch(err => {
             res.status(500).json({"error": err.message})
         })
