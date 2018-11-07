@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken')
+const db = require('../../data/db')
 
 let secret = process.env.SECRET;  // Gets the secret stored in the .env file
 
@@ -6,16 +7,18 @@ module.exports = {
 
     getUser: function(req,res,next) {
         let { username } = req.body
+        console.log(username)
         try{
-            db('users')
+            db('Users')
                 .where({ username })
                 .first()
                 .then(user => {
+                    console.log(user)
                     if(user){
                         req.userIn = user
                         next()
                     }else{
-                        res.status(500).json({error: "Error with user name or password"})
+                        res.status(500).json({error: "Error with user name or password1"})
                     }
                 })
         }catch(err){
