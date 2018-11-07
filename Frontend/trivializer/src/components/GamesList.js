@@ -8,17 +8,27 @@ class GamesList extends Component {
     return (
       <div className="gameslist-page">
         <div className="top-content">
-          <div className="left-side">
-            <Link className="right-side" to="/">
-              Sign Out
-            </Link>
+          <div className="top-leftside">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                  <Link to="/">Home</Link>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                  Games
+                </li>
+              </ol>
+            </nav>
           </div>
+          <Link className="top-rightside" to="/">
+            Sign Out
+          </Link>
         </div>
 
         <div className="main-content">
           <Navbar />
-          {/* Ternary here should go: if [games] display <Games> component, if NOT, display the add new game sign*/}
-          <Games />
+          <h3 className="main-middle">Add New Game</h3>
+          {/* Ternary here should go: if [games] display <Games /> component, if NOT, display the add new game sign*/}
         </div>
       </div>
     );

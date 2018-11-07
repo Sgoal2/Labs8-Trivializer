@@ -14,7 +14,6 @@
   margin-top: 10%;
 }
 
-.gameslist-page,
 .billing-page,
 .invoices-page,
 .setting-page {
@@ -25,8 +24,7 @@
   width: 10%;
   border: 2px solid black;
   height: 75vh;
-  margin-top: 70px;
-  margin-left: 15px;
+  margin-left: 20px;
 }
 
 .navbar li {
@@ -34,5 +32,25 @@
 }
 
 .main-content {
+  display: flex;
   width: 90%;
+  margin-top: 20px;
+}
+
+.top-content {
+  display: flex;
+  justify-content: space-between;
+}
+
+.gameslist-page {
+  display: flex;
+  flex-direction: column;
+}
+
+.main-middle {
+  margin: 0 auto;
+}
+
+.top-rightside {
+  margin-right: 20px;
 }
