@@ -5,7 +5,7 @@ import Billing from "./components/Billing";
 import GamesList from "./components/GamesList";
 import Setting from "./components/Setting";
 import Invoices from "./components/Invoices";
-import { Route } from "react-router-dom";
+import { Route, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { fetchReq } from "./actions";
 
@@ -27,13 +27,15 @@ class App extends Component {
 }
 
 const mapStateToProps = state => {
-    return {
-        questions: state.questions,
-        fetched: state.fetched
-    };
+  return {
+    questions: state.questions,
+    fetched: state.fetched
+  };
 };
 
-export default connect(
+export default withRouter(
+  connect(
     mapStateToProps,
     { fetchReq }
-)(App);
+  )(App)
+);
