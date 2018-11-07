@@ -9,7 +9,8 @@ class LandingPage extends React.Component {
   constructor() {
     super();
     this.state = {
-      registerURL : 'http://localhost:3300/users/register',
+      registerURL : 'https://testsdepl.herokuapp.com/users/register',
+      signinURL : 'https://testsdepl.herokuapp.com/users/login',
       signup_username : '',
       signup_email : '',
       signup_password : '',
@@ -21,33 +22,35 @@ class LandingPage extends React.Component {
   }
 
 
-  redirect = () => {
+  redirect = (e) => {
     // Note from nicky: This redirect function, and the reload in it, is here because I was using <Link> before, and whenever I clicked it to direct it to /gameslist, the background would stay blurred as if the modal is still open. If there's a better fix for it, please let me know :)
     window.location.reload();
     this.props.history.push("/gameslist");
+    e.preventDefault();
   };
 
+  // Sets users input to local state
   handleInput = (e) => {
-    this.setState({ [e.target.name] : e.target.value })
+    this.setState({ [e.target.name] : e.target.value, error: '' })
   }
 
 
   // Checks input credentials and returns 1 if successful, 0 if unsuccessful
-  validateRegister = (credentials) => {
+  validateRegister = () => {
 
-    if(credentials.password !== this.state.signup_password2){
+    if(this.state.signup_password !== this.state.signup_password2){
       this.setState({ error : "Passwords do not match" })
       return 0;
     }
-    else if(!credentials.username){
+    else if(!this.state.signup_username){
       this.setState({ error : "Please enter a valid User Name" })
       return 0;
     }
-    else if(!credentials.email){
+    else if(!this.state.signup_email){
       this.setState({ error : "Please enter an email address" })
       return 0;
     }
-    else if(!credentials.password){
+    else if(!this.state.signup_password){
       this.setState({ error : "Please enter a password" })
       return 0;
     }
@@ -56,61 +59,56 @@ class LandingPage extends React.Component {
 
   validateSignin = () => {
 
+    if(!this.state.signin_username){
+      this.setState({ error : "Please enter a valid User Name"  })
+      return 0;
+    }
+    else if(!this.state.signin_password){
+      this.setState({ error : "Please enter a password" })
+      return 0;
+    }
+    else return 1;
   }
 
   // Handles the submit call on the Register modal
-  registerSubmit = (e) => {
+  handleSubmit = (e) => {
 
     e.preventDefault();
 
-    const credentials = { username : this.state.signup_username, password : this.state.signup_password, email : this.state.signup_email }
+    let credentials;
+    let url;
 
-    if(!this.validateRegister(credentials)){    // Return if we don't have valid credentials
+    console.log("e.target.name:", e.target.name);
 
+    if(e.target.name === 'register' && this.validateRegister()){
+      credentials = { username : this.state.signup_username, password : this.state.signup_password, email : this.state.signup_email }
+      url = this.state.registerURL;
+      console.log("In register");
+    }
+    else if(e.target.name === 'signin' && this.validateSignin()){
+      credentials = { username : this.state.signin_username, password : this.state.signin_password }
+      url = this.state.signinURL;
+      console.log("In signin")
+    }
+    else{
       return;
-
-    }
-    else{                                       // Make API call if we do have valid credentials
-
-      axios.post(this.state.registerURL, { credentials })
-        .then(res => {
-          console.log("response", res);
-          const token = res.data;
-
-          sessionStorage.setItem('jwt', token)
-          this.redirect();
-        })
-        .catch(err => {
-          this.setState({ error : err.message })
-        })
     }
 
-  }
+    console.log("credentials: ", credentials, "url: ", url);
 
-  signinSubmit = () => {
-    e.preventDefault();
+    axios.post(url, { username: credentials.username, password: credentials.password, email: credentials.email || '' })
+      .then(res => {
+        console.log("response", res);
+        const token = res.data;
 
-    const credentials = { username : this.state.signin_username, password : this.state.signin_password }
+        sessionStorage.setItem('jwt', token)
+        this.redirect();
+      })
+      .catch(err => {
+        this.setState({ error : err.message })
+      })
+  
 
-    if(!this.validateRegister(credentials)){    // Return if we don't have valid credentials
-
-      return;
-
-    }
-    else{                                       // Make API call if we do have valid credentials
-
-      axios.post(this.state.registerURL, { credentials })
-        .then(res => {
-          console.log("response", res);
-          const token = res.data;
-
-          sessionStorage.setItem('jwt', token)
-          this.redirect();
-        })
-        .catch(err => {
-          this.setState({ error : err.message })
-        })
-    }
   }
 
   render() {
@@ -148,7 +146,7 @@ class LandingPage extends React.Component {
                     </button>
                   </div>
                   <div className="modal-body">
-                    <form className="signup-body" onSubmit={this.handleSubmit}>
+                    <form name="register" className="signup-body" onSubmit={this.handleSubmit}>
                       <input name="signup_username" onChange={this.handleInput} value ={this.state.signup_username} placeholder="username" />
                       <input  name="signup_email" onChange={this.handleInput} value ={this.state.signup_email} placeholder="email" />
                       <input  name="signup_password" onChange={this.handleInput} value ={this.state.signup_password} placeholder="password" />
@@ -159,7 +157,7 @@ class LandingPage extends React.Component {
                     <button type="button" className="btn btn-secondary" data-dismiss="modal">
                       Close
                     </button>
-                    <button onClick={this.handleSubmit} type="button" className="btn btn-primary">
+                    <button  name="register" onClick={this.handleSubmit} type="button" className="btn btn-primary">
                       Create My Account
                     </button>
                   </div>
@@ -198,16 +196,16 @@ class LandingPage extends React.Component {
                     </button>
                   </div>
                   <div className="modal-body">
-                    <form className="signup-body" onSubmit={this.handleSubmit} >
-                      <input name="signin_username" onChange={this.handleInput} value ={this.state.signup_username}placeholder="password" />
-                      <input name="signin_password" onChange={this.handleInput} value ={this.state.signup_username}placeholder="username" />
+                    <form  name="signin" className="signup-body" onSubmit={this.handleSubmit} >
+                      <input name="signin_username" onChange={this.handleInput} value ={this.state.signin_username}placeholder="username" />
+                      <input name="signin_password" onChange={this.handleInput} value ={this.state.signin_password}placeholder="password" />
                     </form>
                   </div>
                   <div className="modal-footer">
                     <button type="button" className="btn btn-secondary" data-dismiss="modal">
                       Close
                     </button>
-                    <button onClick={this.handleSubmit} className="btn btn-primary">
+                    <button  name="signin" onClick={this.handleSubmit} className="btn btn-primary">
                       Sign In
                     </button>
                   </div>
