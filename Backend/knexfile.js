@@ -7,10 +7,12 @@ module.exports = {
     client: 'sqlite3',
     debug: false,
     connection: {
-      database: './data/trivialize',
+      filename: './data/trivializer.sqlite3',
       user:     'admin',
       password: 'password',
     },
+    
+    useNullAsDefault: true,
     pool: {
       min: 2,
       max: 10
@@ -39,6 +41,7 @@ module.exports = {
   production: {
     client: 'postgresql',
     connection: `${process.env.DATABASE_URL}?ssl=true`,
+    useNullAsDefault: true,
     pool: {
       min: 2,
       max: 10
