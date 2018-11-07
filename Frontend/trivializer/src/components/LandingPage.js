@@ -1,21 +1,124 @@
 import React from "react";
 import "./Components.css";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
+import { connect } from 'react-redux';
+import axios from "axios";
+
 
 class LandingPage extends React.Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = {
+      registerURL : 'http://localhost:3300/users/register',
+      signup_username : '',
+      signup_email : '',
+      signup_password : '',
+      signup_password2 : '',
+      signin_username : '',
+      signin_password : '',
+      error : '',
+    };
   }
+
+
   redirect = () => {
     // Note from nicky: This redirect function, and the reload in it, is here because I was using <Link> before, and whenever I clicked it to direct it to /gameslist, the background would stay blurred as if the modal is still open. If there's a better fix for it, please let me know :)
     window.location.reload();
     this.props.history.push("/gameslist");
   };
+
+  handleInput = (e) => {
+    this.setState({ [e.target.name] : e.target.value })
+  }
+
+
+  // Checks input credentials and returns 1 if successful, 0 if unsuccessful
+  validateRegister = (credentials) => {
+
+    if(credentials.password !== this.state.signup_password2){
+      this.setState({ error : "Passwords do not match" })
+      return 0;
+    }
+    else if(!credentials.username){
+      this.setState({ error : "Please enter a valid User Name" })
+      return 0;
+    }
+    else if(!credentials.email){
+      this.setState({ error : "Please enter an email address" })
+      return 0;
+    }
+    else if(!credentials.password){
+      this.setState({ error : "Please enter a password" })
+      return 0;
+    }
+    else return 1;
+  }
+
+  validateSignin = () => {
+
+  }
+
+  // Handles the submit call on the Register modal
+  registerSubmit = (e) => {
+
+    e.preventDefault();
+
+    const credentials = { username : this.state.signup_username, password : this.state.signup_password, email : this.state.signup_email }
+
+    if(!this.validateRegister(credentials)){    // Return if we don't have valid credentials
+
+      return;
+
+    }
+    else{                                       // Make API call if we do have valid credentials
+
+      axios.post(this.state.registerURL, { credentials })
+        .then(res => {
+          console.log("response", res);
+          const token = res.data;
+
+          sessionStorage.setItem('jwt', token)
+          this.redirect();
+        })
+        .catch(err => {
+          this.setState({ error : err.message })
+        })
+    }
+
+  }
+
+  signinSubmit = () => {
+    e.preventDefault();
+
+    const credentials = { username : this.state.signin_username, password : this.state.signin_password }
+
+    if(!this.validateRegister(credentials)){    // Return if we don't have valid credentials
+
+      return;
+
+    }
+    else{                                       // Make API call if we do have valid credentials
+
+      axios.post(this.state.registerURL, { credentials })
+        .then(res => {
+          console.log("response", res);
+          const token = res.data;
+
+          sessionStorage.setItem('jwt', token)
+          this.redirect();
+        })
+        .catch(err => {
+          this.setState({ error : err.message })
+        })
+    }
+  }
+
   render() {
     return (
       <React.Fragment>
         <div className="landingpage-top">
+
+          {/************  Sign up  Button and Modal ************/}
           <div className="signup">
             <button
               type="button"
@@ -45,18 +148,18 @@ class LandingPage extends React.Component {
                     </button>
                   </div>
                   <div className="modal-body">
-                    <form className="signup-body">
-                      <input placeholder="username" />
-                      <input placeholder="email" />
-                      <input placeholder="password" />
-                      <input placeholder="please confirm password" />
+                    <form className="signup-body" onSubmit={this.handleSubmit}>
+                      <input name="signup_username" onChange={this.handleInput} value ={this.state.signup_username} placeholder="username" />
+                      <input  name="signup_email" onChange={this.handleInput} value ={this.state.signup_email} placeholder="email" />
+                      <input  name="signup_password" onChange={this.handleInput} value ={this.state.signup_password} placeholder="password" />
+                      <input  name="signup_password2" onChange={this.handleInput} value ={this.state.signup_password2} placeholder="please confirm password" />
                     </form>
                   </div>
                   <div className="modal-footer">
                     <button type="button" className="btn btn-secondary" data-dismiss="modal">
                       Close
                     </button>
-                    <button onClick={this.redirect} type="button" className="btn btn-primary">
+                    <button onClick={this.handleSubmit} type="button" className="btn btn-primary">
                       Create My Account
                     </button>
                   </div>
@@ -64,6 +167,8 @@ class LandingPage extends React.Component {
               </div>
             </div>
           </div>
+
+          {/************  Sign in  Button and Modal ************/}
           <div className="signin">
             <button
               type="button"
@@ -77,7 +182,7 @@ class LandingPage extends React.Component {
             <div
               className="modal fade"
               id="signin"
-              tabindex="-1"
+              tabIndex="-1"
               role="dialog"
               aria-labelledby="exampleModalLabel"
               aria-hidden="true"
@@ -93,16 +198,16 @@ class LandingPage extends React.Component {
                     </button>
                   </div>
                   <div className="modal-body">
-                    <form className="signup-body">
-                      <input placeholder="username" />
-                      <input placeholder="password" />
+                    <form className="signup-body" onSubmit={this.handleSubmit} >
+                      <input name="signin_username" onChange={this.handleInput} value ={this.state.signup_username}placeholder="password" />
+                      <input name="signin_password" onChange={this.handleInput} value ={this.state.signup_username}placeholder="username" />
                     </form>
                   </div>
                   <div className="modal-footer">
                     <button type="button" className="btn btn-secondary" data-dismiss="modal">
                       Close
                     </button>
-                    <button onClick={this.redirect} className="btn btn-primary">
+                    <button onClick={this.handleSubmit} className="btn btn-primary">
                       Sign In
                     </button>
                   </div>
@@ -111,6 +216,9 @@ class LandingPage extends React.Component {
             </div>
           </div>
         </div>
+
+
+        {/************  Main Landing Page ************/}
         <div className="landingpage main">
           <div className="main-text card">
             <div className="card-body">
@@ -135,4 +243,10 @@ class LandingPage extends React.Component {
   }
 }
 
-export default LandingPage;
+const mapStateToProps = (state) => {
+  return {
+
+  }
+}
+
+export default withRouter(connect(mapStateToProps, {/*mapped functions here*/})(LandingPage));
