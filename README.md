@@ -8,3 +8,8 @@ Team:
 - [Nicky Chen](https://github.com/nchen0)
 - [Sagie Gelbhauer](https://github.com/Sgoal2)
 - [Chheany Mok](https://github.com/cmok4290)
+
+---
+
+Frontend Deployed: [Here](https://trivializer.netlify.com/)
+Backend Deployed: [Here](https://testsdepl.herokuapp.com/)
