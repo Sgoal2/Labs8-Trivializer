@@ -7,13 +7,11 @@ module.exports = {
 
     getUser: function(req,res,next) {
         let { username } = req.body
-        console.log(username)
         try{
             db('Users')
                 .where({ username })
                 .first()
                 .then(user => {
-                    console.log(user)
                     if(user){
                         req.userIn = user
                         next()
