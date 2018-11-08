@@ -5,6 +5,7 @@ import Billing from "./components/Billing";
 import GamesList from "./components/GamesList";
 import Setting from "./components/Setting";
 import Invoices from "./components/Invoices";
+import Game from "./components/Game";
 import { Route, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { fetchReq } from "./actions";
@@ -22,6 +23,7 @@ class App extends Component {
                 <Route path="/gameslist" component={GamesList} />
                 <Route path="/setting" component={Setting} />
                 <Route path="/invoices" component={Invoices} />
+                <Route path="/game/:id" component={Game} />
             </div>
         );
     }
