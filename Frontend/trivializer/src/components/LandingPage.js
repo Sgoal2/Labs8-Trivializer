@@ -74,13 +74,21 @@ class LandingPage extends React.Component {
   };
 
   validateSignin = () => {
-    if (!this.state.signin_username) {
-      this.setState({ error: "Please enter a valid User Name" });
+    if (!this.state.signin_username || !this.state.signin_password) {
+      if (!this.state.signin_username) {
+        this.setState({ username_error: "Please enter a valid Username." });
+      } else {
+        this.setState({ username_error: "" });
+      }
+      if (!this.state.sign_password) {
+        this.setState({ password_error: "Wrong password, please try again." });
+      } else {
+        this.setState({ password_error: "" });
+      }
       return 0;
-    } else if (!this.state.signin_password) {
-      this.setState({ error: "Please enter a password" });
-      return 0;
-    } else return 1;
+    } else {
+      return 1;
+    }
   };
 
   // Handles the submit call on the Register modal
@@ -123,7 +131,7 @@ class LandingPage extends React.Component {
 
   render() {
     return (
-      <React.Fragment>
+      <div className="landing-page">
         <div className="landingpage-top">
           {/************  Sign up  Button and Modal ************/}
           <div className="signup">
@@ -251,41 +259,45 @@ class LandingPage extends React.Component {
               aria-hidden="true"
             >
               <div className="modal-dialog" role="document">
-                <div className="modal-content">
+                <div className="login-modal modal-content">
                   <div className="modal-header">
-                    <h5 className="modal-title" id="exampleModalLabel">
+                    <h5 className="login-title modal-title" id="exampleModalLabel">
                       Login Below
                     </h5>
                     <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
-                  <div className="modal-body">
+                  <div className="login-body modal-body">
                     <form name="signin" className="signup-body" onSubmit={this.handleSubmit}>
                       <input
                         name="signin_username"
                         onChange={this.handleInput}
                         value={this.state.signin_username}
-                        placeholder="username"
+                        placeholder="Username"
                       />
+                      <label className="validation-label">
+                        {this.state.username_error ? this.state.username_error : null}
+                      </label>
                       <input
                         type="password"
                         name="signin_password"
                         onChange={this.handleInput}
                         value={this.state.signin_password}
-                        placeholder="password"
+                        placeholder="Password"
                       />
+                      <label className="validation-label">
+                        {this.state.password_error ? this.state.password_error : null}
+                      </label>
                     </form>
                   </div>
-                  <div className="modal-footer">
-                    <button type="button" className="btn btn-secondary" data-dismiss="modal">
-                      Close
-                    </button>
-                    <button name="signin" onClick={this.handleSubmit} className="btn btn-primary">
-                      Sign In
-                    </button>
-                    {this.state.error ? <div>{this.state.error}</div> : null}
-                  </div>
+                  <button
+                    name="signin"
+                    onClick={this.handleSubmit}
+                    className="login-button btn btn-primary"
+                  >
+                    Sign In
+                  </button>
                 </div>
               </div>
             </div>
@@ -306,13 +318,13 @@ class LandingPage extends React.Component {
                 Users who register get a welcome email and can reset their password via email as
                 well.
               </p>
-              <Link to="/billing" className="btn btn-primary">
+              <Link to="/billing" className="btn btn-success">
                 Buy Now
               </Link>
             </div>
           </div>
         </div>
-      </React.Fragment>
+      </div>
     );
   }
 }
