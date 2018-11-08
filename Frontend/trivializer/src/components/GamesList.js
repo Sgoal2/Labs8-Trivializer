@@ -15,6 +15,8 @@ class GamesList extends Component {
         };
     }
 
+    componentDidMount() {}
+
     render() {
         return (
             <div className="gameslist-page">
@@ -45,14 +47,28 @@ class GamesList extends Component {
                     {this.state.gamesList.length < 1 ? (
                         <h3 className="main-middle">Add New Game</h3>
                     ) : (
-                        this.state.gamesList.map((item, i) => (
-                            <Games game={item} />
+                        this.state.gamesList.map((game, i) => (
+                            <Link to={`/game/${game["id"]}`}>
+                                <GameDetails
+                                    key={game["id"]}
+                                    index={i}
+                                    game={game}
+                                />
+                            </Link>
                         ))
                     )}
                 </div>
             </div>
         );
     }
+}
+
+function GameDetails({ game }) {
+    return (
+        <div>
+            <Games game={game} />
+        </div>
+    );
 }
 
 export default GamesList;
