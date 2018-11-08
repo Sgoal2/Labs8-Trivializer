@@ -71,6 +71,12 @@ class GamesList extends Component {
                             </Link>
                         ))
                     )}
+                    {this.state.gamesList.length > 1 ? (
+                        <div>
+                            <div>New Game</div>
+                            <button>+</button>
+                        </div>
+                    ) : null}
                 </div>
             </div>
         );
