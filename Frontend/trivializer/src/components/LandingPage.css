@@ -1,7 +1,22 @@
+.signup-title {
+  margin-left: 160px;
+}
+
+.signup-body {
+  padding-bottom: 5px;
+}
+
 .signup-body input {
   height: 50px;
   padding-left: 8px;
   border-radius: 5px;
+  border: 1px solid rgb(179, 179, 179);
+  width: 85%;
+  margin: 0 auto;
+}
+
+input:hover {
+  border: 1px solid rgb(49, 49, 255);
 }
 
 .modal-content {
@@ -12,7 +27,8 @@
   text-align: left;
   color: red;
   font-size: 13px;
-  height: 20px;
+  height: 19px;
+  margin-left: 37px;
 }
 
 .create-button {

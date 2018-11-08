@@ -36,6 +36,7 @@ class LandingPage extends React.Component {
   };
 
   // Checks input credentials and returns 1 if successful, 0 if unsuccessful
+  // There's a double checking below because I want to check several things: #1 if there's no errors AT ALL, return 1, and we get redirected. #2 if there is an error, show the flash message on what the error is (these errors are not mutually exclusive so I made several if statements, so like, not having a valid username doesn't mean the no valid email won't pop up. ) #3 there's an else statement in each one because if the user fills in something correctly, and does it again, it should check if that particular item is done, and if it is, the flash message for it should go away.
   validateRegister = () => {
     if (
       this.state.signup_password !== this.state.signup_password2 ||
@@ -48,15 +49,23 @@ class LandingPage extends React.Component {
         (!this.state.signup_password && !this.state.signup_password2)
       ) {
         this.setState({ confirm_error: "Passwords do not match, try again." });
+      } else {
+        this.setState({ confirm_error: "" });
       }
       if (!this.state.signup_username) {
         this.setState({ username_error: "Please enter a valid Username." });
+      } else {
+        this.setState({ username_error: "" });
       }
       if (!this.state.signup_email) {
         this.setState({ email_error: "Please enter an email address." });
+      } else {
+        this.setState({ email_error: "" });
       }
       if (!this.state.signup_password) {
         this.setState({ password_error: "Please enter a password." });
+      } else {
+        this.setState({ password_error: "" });
       }
       return 0;
     } else {
@@ -138,7 +147,7 @@ class LandingPage extends React.Component {
               <div className="modal-dialog" role="document">
                 <div className="modal-content">
                   <div className="modal-header">
-                    <h5 className="modal-title" id="exampleModalLabel">
+                    <h5 className="signup-title modal-title" id="exampleModalLabel">
                       Sign Up Below
                     </h5>
                     <button type="button" className="close" data-dismiss="modal" aria-label="Close">
