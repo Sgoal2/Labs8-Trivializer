@@ -72,9 +72,10 @@ server.post("/login", utilities.getUser, (req, res) => {
 server.post("/save", utilities.protected, async (req, res) => {
   // Transactions allow us to perform multiple database calls, and if one of them doesn't work,
   // roll back all other calls. Maintains data consistency
-  const { username } = req.body;
+  const { username, gamename, dateCreated, datePlayed } = req.body;
 
   try {
+    // Get user
     await db.transaction(async trx => {
       let userId = await trx("Users")
         .where({ username })
@@ -84,14 +85,36 @@ server.post("/save", utilities.protected, async (req, res) => {
       else {
         throw new Error("username not found");
       }
+      //Enter game info in DB with userID
+      const gameInfo = {
+        name: gamename,
+        date_created: dateCreated,
+        date_played: datePlayed,
+        user_id: userId
+      };
 
-      res.status(200).json({ username: username, userId: userId });
+      let gameId = await trx("Games").insert(gameInfo);
+
+      console.log("gameID: ", gameId);
+      res.status(200).json({ gameID: gameId });
     });
   } catch (err) {
     console.log("err.message: ", err.message);
     res.status(501).json({ error: err.message });
   }
 });
+
+// ID for the game
+// Game title
+// how many games the user has ********
+// games array
+// game ID
+// Description
+// images
+// created at
+// played last
+
+// users -> games -> rounds -> questions -> answers
 
 /*****  Still needed *****/
 
@@ -102,3 +125,8 @@ server.post("/save", utilities.protected, async (req, res) => {
 // Save a game to a user (db-recipe-book)
 
 module.exports = server;
+
+// What I need sent in to save
+// username
+// Game name
+//
