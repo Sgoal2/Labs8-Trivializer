@@ -11,5 +11,5 @@ Team:
 
 ---
 
-Frontend Deployed: [Here](https://trivializer.netlify.com/)
+Frontend Deployed: [Here](https://trivializer.netlify.com/)<br>  
 Backend Deployed: [Here](https://testsdepl.herokuapp.com/)
