@@ -34,6 +34,13 @@ class Game extends Component {
 
                 <div className="main-content">
                     <Navbar />
+                    <div>
+                        <div>Logo</div>
+                        <input value="Game Title" />
+                        <input type="date" />
+                        <button>Print Answer Sheets</button>
+                        <button>Print Answer Key</button>
+                    </div>
                 </div>
             </div>
         );
