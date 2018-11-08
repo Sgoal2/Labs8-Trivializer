@@ -17,7 +17,10 @@ class LandingPage extends React.Component {
       signup_password2: "",
       signin_username: "",
       signin_password: "",
-      error: ""
+      username_error: "",
+      email_error: "",
+      password_error: "",
+      confirm_error: ""
     };
   }
 
@@ -34,19 +37,31 @@ class LandingPage extends React.Component {
 
   // Checks input credentials and returns 1 if successful, 0 if unsuccessful
   validateRegister = () => {
-    if (this.state.signup_password !== this.state.signup_password2) {
-      this.setState({ error: "Passwords do not match" });
+    if (
+      this.state.signup_password !== this.state.signup_password2 ||
+      !this.state.signup_username ||
+      !this.state.signup_email ||
+      !this.state.signup_password
+    ) {
+      if (
+        this.state.signup_password !== this.state.signup_password2 ||
+        (!this.state.signup_password && !this.state.signup_password2)
+      ) {
+        this.setState({ confirm_error: "Passwords do not match, try again." });
+      }
+      if (!this.state.signup_username) {
+        this.setState({ username_error: "Please enter a valid Username." });
+      }
+      if (!this.state.signup_email) {
+        this.setState({ email_error: "Please enter an email address." });
+      }
+      if (!this.state.signup_password) {
+        this.setState({ password_error: "Please enter a password." });
+      }
       return 0;
-    } else if (!this.state.signup_username) {
-      this.setState({ error: "Please enter a valid User Name" });
-      return 0;
-    } else if (!this.state.signup_email) {
-      this.setState({ error: "Please enter an email address" });
-      return 0;
-    } else if (!this.state.signup_password) {
-      this.setState({ error: "Please enter a password" });
-      return 0;
-    } else return 1;
+    } else {
+      return 1;
+    }
   };
 
   validateSignin = () => {
@@ -124,7 +139,7 @@ class LandingPage extends React.Component {
                 <div className="modal-content">
                   <div className="modal-header">
                     <h5 className="modal-title" id="exampleModalLabel">
-                      Sign up for an account below
+                      Sign Up Below
                     </h5>
                     <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
@@ -138,12 +153,32 @@ class LandingPage extends React.Component {
                         value={this.state.signup_username}
                         placeholder="Username"
                       />
+                      <label
+                        className="validation-label"
+                        style={
+                          this.state.username_error
+                            ? { visibility: "visible" }
+                            : { visibility: "hidden" }
+                        }
+                      >
+                        {this.state.username_error ? this.state.username_error : null}
+                      </label>
                       <input
                         name="signup_email"
                         onChange={this.handleInput}
                         value={this.state.signup_email}
                         placeholder="Email"
                       />
+                      <label
+                        className="validation-label"
+                        style={
+                          this.state.email_error
+                            ? { visibility: "visible" }
+                            : { visibility: "hidden" }
+                        }
+                      >
+                        {this.state.email_error ? this.state.email_error : null}
+                      </label>
                       <input
                         type="password"
                         name="signup_password"
@@ -151,6 +186,9 @@ class LandingPage extends React.Component {
                         value={this.state.signup_password}
                         placeholder="Password"
                       />
+                      <label className="validation-label">
+                        {this.state.password_error ? this.state.password_error : null}
+                      </label>
                       <input
                         type="password"
                         name="signup_password2"
@@ -158,22 +196,27 @@ class LandingPage extends React.Component {
                         value={this.state.signup_password2}
                         placeholder="Confirm Password"
                       />
+                      <label
+                        className="validation-label"
+                        style={
+                          this.state.confirm_error
+                            ? { visibility: "visible" }
+                            : { visibility: "hidden" }
+                        }
+                      >
+                        {this.state.confirm_error}
+                      </label>
                     </form>
                   </div>
-                  <div className="modal-footer">
-                    <button type="button" className="btn btn-secondary" data-dismiss="modal">
-                      Close
-                    </button>
-                    <button
-                      name="register"
-                      onClick={this.handleSubmit}
-                      type="button"
-                      className="btn btn-primary"
-                    >
-                      Create My Account
-                    </button>
-                    {this.state.error ? <div>{this.state.error}</div> : null}
-                  </div>
+                  {/*<div className="modal-footer">*/}
+                  <button
+                    name="register"
+                    onClick={this.handleSubmit}
+                    type="button"
+                    className="create-button btn btn-primary"
+                  >
+                    Create My Account
+                  </button>
                 </div>
               </div>
             </div>
