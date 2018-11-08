@@ -1,4 +1,4 @@
 [build]
-base = "Frontend/trivializer/"
-publish = "Frontend/trivializer/build/"
+base = "Frontend/"
+publish = "Frontend/build/"
 command = "yarn build"
