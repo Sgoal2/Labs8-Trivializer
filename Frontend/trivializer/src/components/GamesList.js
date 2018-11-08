@@ -9,8 +9,22 @@ class GamesList extends Component {
         super();
         this.state = {
             gamesList: [
-                { id: "1", name: "Game 1", description: "Game 1" },
-                { id: "2", name: "Game 2", description: "Game 2" }
+                {
+                    id: "1",
+                    title: "Game 1",
+                    description: "Game 1",
+                    image: "",
+                    created: "",
+                    played: ""
+                },
+                {
+                    id: "2",
+                    title: "Game 2",
+                    description: "Game 2",
+                    image: "",
+                    created: "",
+                    played: ""
+                }
             ]
         };
     }

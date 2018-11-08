@@ -5,13 +5,9 @@ import { Link } from "react-router-dom";
 class Games extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            logo: "",
-            gameTitle: "",
-            gameDate: "",
-            roundsList: [{ id: "1", name: "Round 1" }]
-        };
+        this.state = {};
     }
+
     render() {
         return (
             <div>
@@ -24,10 +20,11 @@ class Games extends Component {
                 </div> */}
                 {/* refactor to map Rounds and render */}
                 {/* <Rounds /> */}
-                <div>{this.props.game.name}</div>
+                <div>{this.props.game.title}</div>
                 <div>{this.props.game.description}</div>
-                <div>Created: date</div>
-                <div>Played: date</div>
+                <div>Add game image</div>
+                <div>Created: {this.props.game.created}</div>
+                <div>Played: {this.props.game.played}</div>
             </div>
         );
     }
