@@ -22,6 +22,7 @@ class LandingPage extends React.Component {
 
   redirect = e => {
     // Note from nicky: This redirect function, and the reload in it, is here because I was using <Link> before, and whenever I clicked it to direct it to /gameslist, the background would stay blurred as if the modal is still open. If there's a better fix for it, please let me know :)
+    window.location.reload();
     this.props.history.push("/gameslist");
   };
 
