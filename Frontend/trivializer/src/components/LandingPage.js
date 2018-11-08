@@ -252,7 +252,7 @@ class LandingPage extends React.Component {
                 Users who register get a welcome email and can reset their password via email as
                 well.
               </p>
-              <Link to="/billing" className="btn btn-primary">
+              <Link to="/billing" className="btn btn-secondary">
                 Buy Now
               </Link>
             </div>
