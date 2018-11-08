@@ -8,8 +8,8 @@ class LandingPage extends React.Component {
   constructor() {
     super();
     this.state = {
-      registerURL: "https://testsdepl.herokuapp.com/users/register",
-      signinURL: "https://testsdepl.herokuapp.com/users/login",
+      registerURL: "http://localhost:3300/users/register",
+      signinURL: "http://localhost:3300/users/login",
       signup_username: "",
       signup_email: "",
       signup_password: "",
@@ -73,7 +73,10 @@ class LandingPage extends React.Component {
       };
       url = this.state.registerURL;
     } else if (e.target.name === "signin" && this.validateSignin()) {
-      credentials = { username: this.state.signin_username, password: this.state.signin_password };
+      credentials = {
+        username: this.state.signin_username,
+        password: this.state.signin_password
+      };
       url = this.state.signinURL;
     } else {
       return;
@@ -92,6 +95,7 @@ class LandingPage extends React.Component {
         this.redirect();
       })
       .catch(err => {
+        console.log("err.response: ", err.response);
         this.setState({ error: err.message });
       });
   };
@@ -125,12 +129,21 @@ class LandingPage extends React.Component {
                     <h5 className="modal-title" id="exampleModalLabel">
                       Sign up for an account below
                     </h5>
-                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                    <button
+                      type="button"
+                      className="close"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                    >
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
                   <div className="modal-body">
-                    <form name="register" className="signup-body" onSubmit={this.handleSubmit}>
+                    <form
+                      name="register"
+                      className="signup-body"
+                      onSubmit={this.handleSubmit}
+                    >
                       <input
                         name="signup_username"
                         onChange={this.handleInput}
@@ -160,7 +173,11 @@ class LandingPage extends React.Component {
                     </form>
                   </div>
                   <div className="modal-footer">
-                    <button type="button" className="btn btn-secondary" data-dismiss="modal">
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      data-dismiss="modal"
+                    >
                       Close
                     </button>
                     <button
@@ -203,12 +220,21 @@ class LandingPage extends React.Component {
                     <h5 className="modal-title" id="exampleModalLabel">
                       Login Below
                     </h5>
-                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                    <button
+                      type="button"
+                      className="close"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                    >
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
                   <div className="modal-body">
-                    <form name="signin" className="signup-body" onSubmit={this.handleSubmit}>
+                    <form
+                      name="signin"
+                      className="signup-body"
+                      onSubmit={this.handleSubmit}
+                    >
                       <input
                         name="signin_username"
                         onChange={this.handleInput}
@@ -225,10 +251,18 @@ class LandingPage extends React.Component {
                     </form>
                   </div>
                   <div className="modal-footer">
-                    <button type="button" className="btn btn-secondary" data-dismiss="modal">
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      data-dismiss="modal"
+                    >
                       Close
                     </button>
-                    <button name="signin" onClick={this.handleSubmit} className="btn btn-primary">
+                    <button
+                      name="signin"
+                      onClick={this.handleSubmit}
+                      className="btn btn-primary"
+                    >
                       Sign In
                     </button>
                     {this.state.error ? <div>{this.state.error}</div> : null}
@@ -245,13 +279,13 @@ class LandingPage extends React.Component {
             <div className="card-body">
               <h5 className="card-title">Welcome to Bar Trivia</h5>
               <p className="card-text">
-                Trivializer helps bar trivia hosts create their question sets and answer sheets by
-                pulling from a large and free API of trivia questions. There are free and paid tiers
-                of the app.
+                Trivializer helps bar trivia hosts create their question sets
+                and answer sheets by pulling from a large and free API of trivia
+                questions. There are free and paid tiers of the app.
               </p>
               <p>
-                Users who register get a welcome email and can reset their password via email as
-                well.
+                Users who register get a welcome email and can reset their
+                password via email as well.
               </p>
               <Link to="/billing" className="btn btn-primary">
                 Buy Now
