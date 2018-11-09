@@ -52,3 +52,19 @@
 .main-middle {
   margin: 0 auto;
 }
+.pay-main {
+margin-left: 10px;
+}
+.pay-input {
+  margin: 0 auto;
+  background: gray;
+}
+.pay2 {
+  margin: 0 auto;
+  display: flex;
+ 
+}
+.buy{
+  width: 275px;
+  height: 75px;
+}

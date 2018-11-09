@@ -1,5 +1,6 @@
 import React from "react";
 import Navbar from "./Navbar";
+import Pay from "./Pay";
 import { Link } from "react-router-dom";
 
 const Billing = () => {
@@ -24,6 +25,7 @@ const Billing = () => {
       </div>
       <div className="main-content">
         <Navbar />
+        <Pay />
         <h1 className="main-middle">Billing Page</h1>
       </div>
     </div>
