@@ -5,37 +5,40 @@ import Billing from "./components/Billing";
 import GamesList from "./components/GamesList";
 import Setting from "./components/Setting";
 import Invoices from "./components/Invoices";
+import Game from "./components/Game";
 import { Route, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { fetchReq } from "./actions";
 
 class App extends Component {
-  componentDidMount() {
-    this.props.fetchReq();
-  }
-  render() {
-    return (
-      <div className="App">
-        <Route exact path="/" component={LandingPage} />
-        <Route path="/billing" component={Billing} />
-        <Route path="/gameslist" component={GamesList} />
-        <Route path="/setting" component={Setting} />
-        <Route path="/invoices" component={Invoices} />
-      </div>
-    );
-  }
+    componentDidMount() {
+        this.props.fetchReq();
+    }
+
+    render() {
+        return (
+            <div className="App">
+                <Route exact path="/" component={LandingPage} />
+                <Route path="/billing" component={Billing} />
+                <Route path="/gameslist" component={GamesList} />
+                <Route path="/setting" component={Setting} />
+                <Route path="/invoices" component={Invoices} />
+                <Route path="/game/:id" component={Game} />
+            </div>
+        );
+    }
 }
 
 const mapStateToProps = state => {
-  return {
-    questions: state.questions,
-    fetched: state.fetched
-  };
+    return {
+        questions: state.questions,
+        fetched: state.fetched
+    };
 };
 
 export default withRouter(
-  connect(
-    mapStateToProps,
-    { fetchReq }
-  )(App)
+    connect(
+        mapStateToProps,
+        { fetchReq }
+    )(App)
 );
