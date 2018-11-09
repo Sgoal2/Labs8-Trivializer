@@ -9,8 +9,8 @@ class LandingPage extends React.Component {
   constructor() {
     super();
     this.state = {
-      registerURL: "http://testsdepl.herokuapp.com/users/register",
-      signinURL: "http://testsdepl.herokuapp.com/users/login",
+      registerURL: "https://testsdepl.herokuapp.com/users/register",
+      signinURL: "https://testsdepl.herokuapp.com/users/login",
       signup_username: "",
       signup_email: "",
       signup_password: "",
