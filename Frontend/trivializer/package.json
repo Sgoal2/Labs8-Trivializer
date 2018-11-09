@@ -5,13 +5,16 @@
   "dependencies": {
     "axios": "^0.18.0",
     "react": "^16.6.0",
+    "react-credit-cards": "^0.7.0",
     "react-dom": "^16.6.0",
     "react-redux": "^5.1.0",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.1",
     "react-stripe-elements": "^2.0.1",
     "redux": "^4.0.1",
+    "redux-form": "^7.4.2",
     "redux-logger": "^3.0.6",
+    "redux-payment-form": "^0.0.5",
     "redux-thunk": "^2.3.0"
   },
   "scripts": {
