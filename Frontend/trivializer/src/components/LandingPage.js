@@ -17,7 +17,10 @@ class LandingPage extends React.Component {
       signup_password2: "",
       signin_username: "",
       signin_password: "",
-      error: ""
+      username_error: "",
+      email_error: "",
+      password_error: "",
+      confirm_error: ""
     };
   }
 
@@ -33,30 +36,59 @@ class LandingPage extends React.Component {
   };
 
   // Checks input credentials and returns 1 if successful, 0 if unsuccessful
+  // There's a double checking below because I want to check several things: #1 if there's no errors AT ALL, return 1, and we get redirected. #2 if there is an error, show the flash message on what the error is (these errors are not mutually exclusive so I made several if statements, so like, not having a valid username doesn't mean the no valid email won't pop up. ) #3 there's an else statement in each one because if the user fills in something correctly, and does it again, it should check if that particular item is done, and if it is, the flash message for it should go away.
   validateRegister = () => {
-    if (this.state.signup_password !== this.state.signup_password2) {
-      this.setState({ error: "Passwords do not match" });
+    if (
+      this.state.signup_password !== this.state.signup_password2 ||
+      !this.state.signup_username ||
+      !this.state.signup_email ||
+      !this.state.signup_password
+    ) {
+      if (
+        this.state.signup_password !== this.state.signup_password2 ||
+        (!this.state.signup_password && !this.state.signup_password2)
+      ) {
+        this.setState({ confirm_error: "Passwords do not match, try again." });
+      } else {
+        this.setState({ confirm_error: "" });
+      }
+      if (!this.state.signup_username) {
+        this.setState({ username_error: "Please enter a valid Username." });
+      } else {
+        this.setState({ username_error: "" });
+      }
+      if (!this.state.signup_email) {
+        this.setState({ email_error: "Please enter an email address." });
+      } else {
+        this.setState({ email_error: "" });
+      }
+      if (!this.state.signup_password) {
+        this.setState({ password_error: "Please enter a password." });
+      } else {
+        this.setState({ password_error: "" });
+      }
       return 0;
-    } else if (!this.state.signup_username) {
-      this.setState({ error: "Please enter a valid User Name" });
-      return 0;
-    } else if (!this.state.signup_email) {
-      this.setState({ error: "Please enter an email address" });
-      return 0;
-    } else if (!this.state.signup_password) {
-      this.setState({ error: "Please enter a password" });
-      return 0;
-    } else return 1;
+    } else {
+      return 1;
+    }
   };
 
   validateSignin = () => {
-    if (!this.state.signin_username) {
-      this.setState({ error: "Please enter a valid User Name" });
+    if (!this.state.signin_username || !this.state.signin_password) {
+      if (!this.state.signin_username) {
+        this.setState({ username_error: "Please enter a valid Username." });
+      } else {
+        this.setState({ username_error: "" });
+      }
+      if (!this.state.sign_password) {
+        this.setState({ password_error: "Wrong password, please try again." });
+      } else {
+        this.setState({ password_error: "" });
+      }
       return 0;
-    } else if (!this.state.signin_password) {
-      this.setState({ error: "Please enter a password" });
-      return 0;
-    } else return 1;
+    } else {
+      return 1;
+    }
   };
 
   // Handles the submit call on the Register modal
@@ -99,7 +131,7 @@ class LandingPage extends React.Component {
 
   render() {
     return (
-      <React.Fragment>
+      <div className="landing-page">
         <div className="landingpage-top">
           {/************  Sign up  Button and Modal ************/}
           <div className="signup">
@@ -123,8 +155,8 @@ class LandingPage extends React.Component {
               <div className="modal-dialog" role="document">
                 <div className="modal-content">
                   <div className="modal-header">
-                    <h5 className="modal-title" id="exampleModalLabel">
-                      Sign up for an account below
+                    <h5 className="signup-title modal-title" id="exampleModalLabel">
+                      Sign Up Below
                     </h5>
                     <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
@@ -138,12 +170,32 @@ class LandingPage extends React.Component {
                         value={this.state.signup_username}
                         placeholder="Username"
                       />
+                      <label
+                        className="validation-label"
+                        style={
+                          this.state.username_error
+                            ? { visibility: "visible" }
+                            : { visibility: "hidden" }
+                        }
+                      >
+                        {this.state.username_error ? this.state.username_error : null}
+                      </label>
                       <input
                         name="signup_email"
                         onChange={this.handleInput}
                         value={this.state.signup_email}
                         placeholder="Email"
                       />
+                      <label
+                        className="validation-label"
+                        style={
+                          this.state.email_error
+                            ? { visibility: "visible" }
+                            : { visibility: "hidden" }
+                        }
+                      >
+                        {this.state.email_error ? this.state.email_error : null}
+                      </label>
                       <input
                         type="password"
                         name="signup_password"
@@ -151,6 +203,9 @@ class LandingPage extends React.Component {
                         value={this.state.signup_password}
                         placeholder="Password"
                       />
+                      <label className="validation-label">
+                        {this.state.password_error ? this.state.password_error : null}
+                      </label>
                       <input
                         type="password"
                         name="signup_password2"
@@ -158,22 +213,27 @@ class LandingPage extends React.Component {
                         value={this.state.signup_password2}
                         placeholder="Confirm Password"
                       />
+                      <label
+                        className="validation-label"
+                        style={
+                          this.state.confirm_error
+                            ? { visibility: "visible" }
+                            : { visibility: "hidden" }
+                        }
+                      >
+                        {this.state.confirm_error}
+                      </label>
                     </form>
                   </div>
-                  <div className="modal-footer">
-                    <button type="button" className="btn btn-secondary" data-dismiss="modal">
-                      Close
-                    </button>
-                    <button
-                      name="register"
-                      onClick={this.handleSubmit}
-                      type="button"
-                      className="btn btn-primary"
-                    >
-                      Create My Account
-                    </button>
-                    {this.state.error ? <div>{this.state.error}</div> : null}
-                  </div>
+                  {/*<div className="modal-footer">*/}
+                  <button
+                    name="register"
+                    onClick={this.handleSubmit}
+                    type="button"
+                    className="create-button btn btn-primary"
+                  >
+                    Create My Account
+                  </button>
                 </div>
               </div>
             </div>
@@ -199,41 +259,45 @@ class LandingPage extends React.Component {
               aria-hidden="true"
             >
               <div className="modal-dialog" role="document">
-                <div className="modal-content">
+                <div className="login-modal modal-content">
                   <div className="modal-header">
-                    <h5 className="modal-title" id="exampleModalLabel">
+                    <h5 className="login-title modal-title" id="exampleModalLabel">
                       Login Below
                     </h5>
                     <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
-                  <div className="modal-body">
+                  <div className="login-body modal-body">
                     <form name="signin" className="signup-body" onSubmit={this.handleSubmit}>
                       <input
                         name="signin_username"
                         onChange={this.handleInput}
                         value={this.state.signin_username}
-                        placeholder="username"
+                        placeholder="Username"
                       />
+                      <label className="validation-label">
+                        {this.state.username_error ? this.state.username_error : null}
+                      </label>
                       <input
                         type="password"
                         name="signin_password"
                         onChange={this.handleInput}
                         value={this.state.signin_password}
-                        placeholder="password"
+                        placeholder="Password"
                       />
+                      <label className="validation-label">
+                        {this.state.password_error ? this.state.password_error : null}
+                      </label>
                     </form>
                   </div>
-                  <div className="modal-footer">
-                    <button type="button" className="btn btn-secondary" data-dismiss="modal">
-                      Close
-                    </button>
-                    <button name="signin" onClick={this.handleSubmit} className="btn btn-primary">
-                      Sign In
-                    </button>
-                    {this.state.error ? <div>{this.state.error}</div> : null}
-                  </div>
+                  <button
+                    name="signin"
+                    onClick={this.handleSubmit}
+                    className="login-button btn btn-primary"
+                  >
+                    Sign In
+                  </button>
                 </div>
               </div>
             </div>
@@ -254,13 +318,13 @@ class LandingPage extends React.Component {
                 Users who register get a welcome email and can reset their password via email as
                 well.
               </p>
-              <Link to="/billing" className="btn btn-primary">
+              <Link to="/billing" className="btn btn-success">
                 Buy Now
               </Link>
             </div>
           </div>
         </div>
-      </React.Fragment>
+      </div>
     );
   }
 }
