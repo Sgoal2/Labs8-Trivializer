@@ -159,7 +159,10 @@ class LandingPage extends React.Component {
               <div className="modal-dialog" role="document">
                 <div className="modal-content">
                   <div className="modal-header">
-                    <h5 className="signup-title modal-title" id="exampleModalLabel">
+                    <h5
+                      className="signup-title modal-title"
+                      id="exampleModalLabel"
+                    >
                       Sign Up Below
                     </h5>
                     <button type="button" className="close" data-dismiss="modal" aria-label="Close">
@@ -182,7 +185,9 @@ class LandingPage extends React.Component {
                             : { visibility: "hidden" }
                         }
                       >
-                        {this.state.username_error ? this.state.username_error : null}
+                        {this.state.username_error
+                          ? this.state.username_error
+                          : null}
                       </label>
                       <input
                         name="signup_email"
@@ -208,7 +213,9 @@ class LandingPage extends React.Component {
                         placeholder="Password"
                       />
                       <label className="validation-label">
-                        {this.state.password_error ? this.state.password_error : null}
+                        {this.state.password_error
+                          ? this.state.password_error
+                          : null}
                       </label>
                       <input
                         type="password"
@@ -264,7 +271,10 @@ class LandingPage extends React.Component {
               <div className="modal-dialog" role="document">
                 <div className="login-modal modal-content">
                   <div className="modal-header">
-                    <h5 className="login-title modal-title" id="exampleModalLabel">
+                    <h5
+                      className="login-title modal-title"
+                      id="exampleModalLabel"
+                    >
                       Login Below
                     </h5>
                     <button type="button" className="close" data-dismiss="modal" aria-label="Close">
@@ -280,7 +290,9 @@ class LandingPage extends React.Component {
                         placeholder="Username"
                       />
                       <label className="validation-label">
-                        {this.state.username_error ? this.state.username_error : null}
+                        {this.state.username_error
+                          ? this.state.username_error
+                          : null}
                       </label>
                       <input
                         type="password"
@@ -290,7 +302,9 @@ class LandingPage extends React.Component {
                         placeholder="Password"
                       />
                       <label className="validation-label">
-                        {this.state.password_error ? this.state.password_error : null}
+                        {this.state.password_error
+                          ? this.state.password_error
+                          : null}
                       </label>
                     </form>
                   </div>
