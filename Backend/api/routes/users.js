@@ -72,7 +72,7 @@ server.post("/login", utilities.getUser, (req, res) => {
 server.post("/save", utilities.protected, async (req, res) => {
   // Transactions allow us to perform multiple database calls, and if one of them doesn't work,
   // roll back all other calls. Maintains data consistency
-  const { username, gamename, dateCreated, datePlayed } = req.body;
+  const { username, gamename, dateCreated, datePlayed, rounds } = req.body;
 
   try {
     // Get user
@@ -93,9 +93,27 @@ server.post("/save", utilities.protected, async (req, res) => {
         user_id: userId
       };
 
-      let gameId = await trx("Games").insert(gameInfo);
+      let gameId = (await trx("Games").insert(gameInfo))[0];
 
       console.log("gameID: ", gameId);
+
+      // Enter Rounds in Database
+      const numberOfRounds = rounds.length;
+      const roundsPackage = rounds.map(round => {
+        return {
+          name: round.roundname,
+          number_of_questions: round.round.length,
+          game_id: gameId
+        };
+      });
+      console.log("rounds: ", rounds);
+      console.log("numberOfRounds: ", numberOfRounds);
+
+      let roundsIds = roundsPackage.map(async round => {
+        return (await trx("Rounds").insert(round))[0];
+      });
+
+      // Insert questions into database
       res.status(200).json({ gameID: gameId });
     });
   } catch (err) {
@@ -129,4 +147,4 @@ module.exports = server;
 // What I need sent in to save
 // username
 // Game name
-//
+// round (array)
