@@ -1,7 +1,10 @@
 import { FETCHING, FETCHED, ERROR } from "../actions";
 
 const initialState = {
+    games: [],
+    rounds: [],
     questions: [],
+    invoiced: [],
     fetching: false,
     fetched: false,
     saving: false,

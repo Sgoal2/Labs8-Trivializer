@@ -1,8 +1,9 @@
 import React from "react";
-import "./Components.css";
 import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import axios from "axios";
+import "./Components.css";
+import "./LandingPage.css";
 
 class LandingPage extends React.Component {
   constructor() {
@@ -129,33 +130,33 @@ class LandingPage extends React.Component {
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
-                  <div className="modal-body">
+                  <div className="signup-body modal-body">
                     <form name="register" className="signup-body" onSubmit={this.handleSubmit}>
                       <input
                         name="signup_username"
                         onChange={this.handleInput}
                         value={this.state.signup_username}
-                        placeholder="username"
+                        placeholder="Username"
                       />
                       <input
                         name="signup_email"
                         onChange={this.handleInput}
                         value={this.state.signup_email}
-                        placeholder="email"
+                        placeholder="Email"
                       />
                       <input
                         type="password"
                         name="signup_password"
                         onChange={this.handleInput}
                         value={this.state.signup_password}
-                        placeholder="password"
+                        placeholder="Password"
                       />
                       <input
                         type="password"
                         name="signup_password2"
                         onChange={this.handleInput}
                         value={this.state.signup_password2}
-                        placeholder="please confirm password"
+                        placeholder="Confirm Password"
                       />
                     </form>
                   </div>

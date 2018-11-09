@@ -6,7 +6,8 @@ class Rounds extends Component {
         return (
             <div>
                 Rounds
-                <Questions />
+                {/* <Questions /> */}
+                <h3>{this.props.round.name}</h3>
             </div>
         );
     }
