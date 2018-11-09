@@ -109,11 +109,58 @@ server.post("/save", utilities.protected, async (req, res) => {
       console.log("rounds: ", rounds);
       console.log("numberOfRounds: ", numberOfRounds);
 
-      let roundsIds = roundsPackage.map(async round => {
+      let roundsIds;
+
+      let roundsPromises = roundsPackage.map(async round => {
         return (await trx("Rounds").insert(round))[0];
       });
 
-      // Insert questions into database
+      await Promise.all(roundsPromises).then(values => {
+        console.log("Promises!!: ", values);
+        roundsIds = values;
+      });
+
+      console.log("roundsPromises line 118: ", roundsPromises);
+
+      let questions = [];
+
+      rounds.forEach((namedRound, index) => {
+        namedRound.round.forEach(round => {
+          questions.push({
+            rounds_id: roundsIds[index],
+            category: round.category,
+            difficulty: round.difficulty,
+            type: round.type,
+            question: round.question,
+            correct_answer: round.correct_answer,
+            incorrect_answers: round.incorrect_answers.join(",")
+          });
+        });
+      });
+
+      // Insert questions/answers into database
+
+      let indicator = await trx("Questions").insert(questions);
+      // rounds.forEach(
+      //   async (round, index) =>
+      //     await round.round.forEach(async subRound => {
+      //       // console.log("innner object:", {
+      //       //   rounds_id: roundsIds[index],
+      //       //   category: subRound.category,
+      //       //   difficulty: subRound.difficulty,
+      //       //   type: subRound.type,
+      //       //   question: subRound.question
+      //       // });
+      //       return await trx("Questions").insert({
+      //         rounds_id: roundsIds[index],
+      //         category: subRound.category,
+      //         difficulty: subRound.difficulty,
+      //         type: subRound.type,
+      //         question: subRound.question
+      //       });
+      //     })
+      // );
+
       res.status(200).json({ gameID: gameId });
     });
   } catch (err) {
