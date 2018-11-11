@@ -95,10 +95,10 @@ server.post("/save", utilities.protected, async (req, res) => {
 
       let gameId = (await trx("Games").insert(gameInfo))[0];
 
-      console.log("gameID: ", gameId);
-
       // Enter Rounds in Database
-      const numberOfRounds = rounds.length;
+      const numberOfRounds = rounds.length; // First get number of rounds
+
+      // Then assemble what we're going to insert in rounds table
       const roundsPackage = rounds.map(round => {
         return {
           name: round.roundname,
@@ -106,21 +106,18 @@ server.post("/save", utilities.protected, async (req, res) => {
           game_id: gameId
         };
       });
-      console.log("rounds: ", rounds);
-      console.log("numberOfRounds: ", numberOfRounds);
-
-      let roundsIds;
 
       let roundsPromises = roundsPackage.map(async round => {
+        // Insert all rounds into game
         return (await trx("Rounds").insert(round))[0];
       });
+
+      let roundsIds;
 
       await Promise.all(roundsPromises).then(values => {
         console.log("Promises!!: ", values);
         roundsIds = values;
       });
-
-      console.log("roundsPromises line 118: ", roundsPromises);
 
       // Insert questions/answers into database
       let questions = [];
@@ -141,14 +138,92 @@ server.post("/save", utilities.protected, async (req, res) => {
 
       let indicator = await trx("Questions").insert(questions);
 
-      console.log("Indicator: ", indicator);
-      res.status(200).json({ gameID: gameId });
+      const returnGame = {
+        gameId: gameId,
+        gamename: gamename,
+        dateCreated: dateCreated,
+        datePlayed: datePlayed,
+        rounds: rounds
+      };
+      res.status(200).json(returnGame);
     });
   } catch (err) {
     console.log("err.message: ", err.message);
     res.status(501).json({ error: err.message });
   }
 });
+
+server.post(
+  "/games",
+  utilities.getUser,
+  utilities.protected,
+  async (req, res) => {
+    try {
+      const id = req.userIn.id;
+      console.log("ID: ", id);
+      let games = await db
+        .select(
+          "g.id as gameId",
+          "g.name as gamename",
+          "g.date_created as dateCreated",
+          "g.date_played as datePlayed"
+        )
+        .from("Users as u")
+        .leftJoin("Games as g", "g.user_id", "u.id")
+        .where("u.id", "=", id);
+
+      console.log("Games: ", games);
+
+      let rounds = await db
+        .select(
+          "r.game_id as gameId",
+          "r.name as roundname",
+          "r.number_of_questions"
+        )
+        .from("Games as g")
+        .leftJoin("Rounds as r", "g.id", "r.game_id");
+
+      console.log("Rounds: ", rounds);
+
+      let raw_data = await db
+        .select(
+          "u.username",
+          "g.id as gameId",
+          "g.name as gamename",
+          "g.date_created as dateCreated",
+          "g.date_played as datePlayed",
+          "r.name as roundname",
+          "r.number_of_questions",
+          "q.category",
+          "q.difficulty",
+          "q.type",
+          "q.question",
+          "q.correct_answer",
+          "q.incorrect_answers"
+        )
+        .from("Users as u")
+        .leftJoin("Games as g", "g.user_id", "u.id")
+        .leftJoin("Rounds as r", "g.id", "r.game_id")
+        .leftJoin("Questions as q", "r.id", "q.rounds_id")
+        .where("u.id", "=", id);
+
+      // let meoization = {}
+      // let games = {
+      //   username: raw_data[0].username,
+      //   games: [],
+      // }
+
+      // raw_data.forEach(questionBlock => {
+      //   if(questionBlock.gameId)
+      // })
+
+      res.status(200).json(raw_data);
+    } catch (err) {
+      console.log("err.message: ", err.message);
+      res.status(500).json({ error: "Problem getting games" });
+    }
+  }
+);
 
 // ID for the game
 // Game title
@@ -176,3 +251,5 @@ module.exports = server;
 // username
 // Game name
 // round (array)
+// each round has roundname, round (array with question objects)
+// Each question object has category, type, difficulty, question, correct_answer, incorrect_answers (array)
