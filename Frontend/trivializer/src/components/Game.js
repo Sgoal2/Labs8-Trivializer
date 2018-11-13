@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Navbar from "./Navbar";
+import Rounds from "./Rounds";
 import { Link } from "react-router-dom";
 
 class Game extends Component {
@@ -8,7 +9,18 @@ class Game extends Component {
         this.state = {
             gameTitle: "",
             gameDescription: "",
-            gameDate: ""
+            gameDate: "",
+            roundId: 0,
+            roundsList: [
+                {
+                    id: 0,
+                    title: "Round One",
+                    numberOfQs: 10,
+                    category: "",
+                    difficulty: "",
+                    type: ""
+                }
+            ]
         };
     }
 
@@ -74,11 +86,45 @@ class Game extends Component {
                         <button>Print Answer Sheets</button>
                         <button>Print Answer Key</button>
                         <button>Save Game</button>
+
+                        {this.state.roundsList.length < 1 ? (
+                            <div>
+                                <h3 className="main-middle">Add New Round</h3>
+                                <Link to={`/round/${this.state.roundId}`}>
+                                    +
+                                </Link>
+                            </div>
+                        ) : (
+                            this.state.roundsList.map((round, i) => (
+                                <Link to={`/round/${round["id"]}`}>
+                                    <RoundDetails
+                                        key={round["id"]}
+                                        index={i}
+                                        round={round}
+                                    />
+                                </Link>
+                            ))
+                        )}
+
+                        {this.state.roundsList.length > 1 ? (
+                            <div>
+                                <div>New Round</div>
+                                <button>+</button>
+                            </div>
+                        ) : null}
                     </div>
                 </div>
             </div>
         );
     }
+}
+
+function RoundDetails({ round }) {
+    return (
+        <div>
+            <Rounds round={round} />
+        </div>
+    );
 }
 
 export default Game;
