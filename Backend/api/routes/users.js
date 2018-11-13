@@ -218,14 +218,15 @@ server.post("/save", utilities.protected, async (req, res) => {
   }
 });
 
+// Get all games for a username passed in
 server.post(
   "/games",
   utilities.getUser,
   utilities.protected,
   async (req, res) => {
     try {
-      const id = req.userIn.id;
-      console.log("ID: ", id);
+      const id = req.userIn.id; // This is set in utilities.getUser
+
       let games = await db
         .select(
           "g.id as gameId",
@@ -238,11 +239,8 @@ server.post(
         .leftJoin("Games as g", "g.user_id", "u.id")
         .where("u.id", "=", id);
 
-      console.log("Games: ", games);
-
       res.status(200).json(games);
     } catch (err) {
-      console.log("err.message: ", err.message);
       res.status(500).json({ error: "Problem getting games" });
     }
   }
