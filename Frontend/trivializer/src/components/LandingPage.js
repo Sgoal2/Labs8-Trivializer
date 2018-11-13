@@ -5,6 +5,15 @@ import axios from "axios";
 import "./Components.css";
 import "./LandingPage.css";
 
+let regex = /^([a-z\d\.-]+)@([a-z\d-]{2,8})\.([a-z]{2,8})(\.[a-z]{2,8})?$/;
+
+function validate(field, regex) {
+  if (regex.test(field)) {
+    return true;
+  }
+  return false;
+}
+
 class LandingPage extends React.Component {
   constructor() {
     super();
@@ -60,7 +69,11 @@ class LandingPage extends React.Component {
       if (!this.state.signup_email) {
         this.setState({ email_error: "Please enter an email address." });
       } else {
-        this.setState({ email_error: "" });
+        if (validate(this.state.signup_email, regex) !== true) {
+          this.setState({ email_error: "Invalid email format, please try again." });
+        } else {
+          this.setState({ email_error: "" });
+        }
       }
       if (!this.state.signup_password) {
         this.setState({ password_error: "Please enter a password." });
