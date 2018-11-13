@@ -7,14 +7,8 @@ import Setting from "./components/Setting";
 import Invoices from "./components/Invoices";
 import Game from "./components/Game";
 import { Route, withRouter } from "react-router-dom";
-import { connect } from "react-redux";
-import { fetchReq } from "./actions";
 
 class App extends Component {
-    componentDidMount() {
-        this.props.fetchReq();
-    }
-
     render() {
         return (
             <div className="App">
@@ -29,16 +23,4 @@ class App extends Component {
     }
 }
 
-const mapStateToProps = state => {
-    return {
-        questions: state.questions,
-        fetched: state.fetched
-    };
-};
-
-export default withRouter(
-    connect(
-        mapStateToProps,
-        { fetchReq }
-    )(App)
-);
+export default withRouter(App);
