@@ -5,7 +5,9 @@ import axios from "axios";
 import "./Components.css";
 import "./LandingPage.css";
 
-let regex = /^([a-z\d\.-]+)@([a-z\d-]{2,8})\.([a-z]{2,8})(\.[a-z]{2,8})?$/;
+const username_regex = /^[a-zA-Z0-9]{4,}$/;
+const email_regex = /^([a-z\d\.-]+)@([a-z\d-]{2,8})\.([a-z]{2,8})(\.[a-z]{2,8})?$/;
+const password_regex = /(?=.*\d)(?=.*[a-z])[0-9a-zA-Z]{8,}/;
 
 function validate(field, regex) {
   if (regex.test(field)) {
@@ -57,19 +59,25 @@ class LandingPage extends React.Component {
         this.state.signup_password !== this.state.signup_password2 ||
         (!this.state.signup_password && !this.state.signup_password2)
       ) {
-        this.setState({ confirm_error: "Passwords do not match, try again." });
+        this.setState({ confirm_error: "Passwords do not match, please try again." });
       } else {
         this.setState({ confirm_error: "" });
       }
-      if (!this.state.signup_username || this.state.signup_username.length < 4) {
-        this.setState({ username_error: "Please enter a valid Username." });
+      if (!this.state.signup_username) {
+        this.setState({ username_error: "Username cannot be left blank." });
       } else {
-        this.setState({ username_error: "" });
+        if (validate(this.state.signup_username, username_regex) !== true) {
+          this.setState({
+            username_error: "Needs to be: at least 4 characters, letters and numbers only."
+          });
+        } else {
+          this.setState({ username_error: "" });
+        }
       }
       if (!this.state.signup_email) {
         this.setState({ email_error: "Please enter an email address." });
       } else {
-        if (validate(this.state.signup_email, regex) !== true) {
+        if (validate(this.state.signup_email, email_regex) !== true) {
           this.setState({ email_error: "Invalid email format, please try again." });
         } else {
           this.setState({ email_error: "" });
@@ -78,7 +86,13 @@ class LandingPage extends React.Component {
       if (!this.state.signup_password) {
         this.setState({ password_error: "Please enter a password." });
       } else {
-        this.setState({ password_error: "" });
+        if (validate(this.state.signup_password, password_regex) !== true) {
+          this.setState({
+            password_error: "1 lowercase letter, 1 number, and at least 8 characters needed."
+          });
+        } else {
+          this.setState({ password_error: "" });
+        }
       }
       return 0;
     } else {
@@ -91,7 +105,13 @@ class LandingPage extends React.Component {
       if (!this.state.signin_username) {
         this.setState({ username_error: "Please enter a valid Username." });
       } else {
-        this.setState({ username_error: "" });
+        if (validate(this.state.signin_username, username_regex) !== true) {
+          this.setState({
+            username_error: "Needs to be: at least 4 characters, letters and numbers only."
+          });
+        } else {
+          this.setState({ username_error: "" });
+        }
       }
       if (!this.state.sign_password) {
         this.setState({ password_error: "Wrong password, please try again." });
