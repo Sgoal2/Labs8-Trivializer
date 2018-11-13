@@ -39,6 +39,8 @@ class GamesList extends Component {
         }
     };
 
+    handleSaveGame = e => {};
+
     render() {
         return (
             <div className="gameslist-page">

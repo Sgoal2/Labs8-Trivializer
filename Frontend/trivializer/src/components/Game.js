@@ -36,6 +36,8 @@ class Game extends Component {
         this.setState({ [e.target.name]: e.target.value });
     };
 
+    handleSaveGame = e => {};
+
     render() {
         return (
             <div className="game-page">
@@ -96,13 +98,13 @@ class Game extends Component {
                             </div>
                         ) : (
                             this.state.roundsList.map((round, i) => (
-                                <Link to={`/round/${round["id"]}`}>
+                                <div>
                                     <RoundDetails
                                         key={round["id"]}
                                         index={i}
                                         round={round}
                                     />
-                                </Link>
+                                </div>
                             ))
                         )}
 
