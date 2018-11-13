@@ -163,6 +163,9 @@ server.post("/save", utilities.protected, async (req, res) => {
       const roundsPackage = rounds.map(round => {
         return {
           name: round.roundname,
+          category: round.category,
+          type: round.type,
+          difficulty: round.difficulty,
           number_of_questions: round.round.length,
           game_id: gameId
         };
@@ -245,31 +248,6 @@ server.post(
   }
 );
 
-// ID for the game
-// Game title
-// how many games the user has ********
-// games array
-// game ID
-// Description
-// images
-// created at
-// played last
-
 // users -> games -> rounds -> questions -> answers
 
-/*****  Still needed *****/
-
-// Authenticate ??
-
-// Get all games for a user (db-recipe-book)
-
-// Save a game to a user (db-recipe-book)
-
 module.exports = server;
-
-// What I need sent in to save
-// username
-// Game name
-// round (array)
-// each round has roundname, round (array with question objects)
-// Each question object has category, type, difficulty, question, correct_answer, incorrect_answers (array)
