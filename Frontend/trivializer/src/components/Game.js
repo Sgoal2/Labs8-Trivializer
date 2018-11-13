@@ -5,8 +5,24 @@ import { Link } from "react-router-dom";
 class Game extends Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            gameTitle: "",
+            gameDescription: "",
+            gameDate: ""
+        };
     }
+
+    handleTitle = e => {
+        this.setState({ [e.target.name]: e.target.value });
+    };
+
+    handleDescription = e => {
+        this.setState({ [e.target.name]: e.target.value });
+    };
+
+    handleDate = e => {
+        this.setState({ [e.target.name]: e.target.value });
+    };
 
     render() {
         return (
@@ -14,12 +30,12 @@ class Game extends Component {
                 <div className="top-content">
                     <div className="top-leftside">
                         <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item">
+                            <ol className="breadcrumb">
+                                <li className="breadcrumb-item">
                                     <Link to="/">Home</Link>
                                 </li>
                                 <li
-                                    class="breadcrumb-item active"
+                                    className="breadcrumb-item active"
                                     aria-current="page"
                                 >
                                     Games
@@ -36,10 +52,28 @@ class Game extends Component {
                     <Navbar />
                     <div>
                         <div>Logo</div>
-                        <input value="Game Title" />
-                        <input type="date" />
+                        <input
+                            name="gameTitle"
+                            placeholder="Game Title"
+                            value={this.state.gameTitle}
+                            onChange={this.handleTitle}
+                        />
+                        <input
+                            name="gameDescription"
+                            placeholder="Game Description"
+                            value={this.state.gameDescription}
+                            onChange={this.handleDescription}
+                        />
+                        <input
+                            type="date"
+                            name="gameDate"
+                            placeholder="mm/dd/yyyy"
+                            value={this.state.gameDate}
+                            onChange={this.handleDate}
+                        />
                         <button>Print Answer Sheets</button>
                         <button>Print Answer Key</button>
+                        <button>Save Game</button>
                     </div>
                 </div>
             </div>

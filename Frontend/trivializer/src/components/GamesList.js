@@ -8,28 +8,36 @@ class GamesList extends Component {
     constructor() {
         super();
         this.state = {
+            gameId: 0,
             gamesList: [
-                {
-                    id: "1",
-                    title: "Game 1",
-                    description: "Game 1",
-                    image: "",
-                    created: "",
-                    played: ""
-                },
-                {
-                    id: "2",
-                    title: "Game 2",
-                    description: "Game 2",
-                    image: "",
-                    created: "",
-                    played: ""
-                }
+                // {
+                //     id: "1",
+                //     title: "Game 1",
+                //     description: "Game 1",
+                //     image: "",
+                //     created: "",
+                //     played: "",
+                //     rounds: [{ questions: [] }]
+                // },
+                // {
+                //     id: "2",
+                //     title: "Game 2",
+                //     description: "Game 2",
+                //     image: "",
+                //     created: "",
+                //     played: ""
+                // }
             ]
         };
     }
 
     componentDidMount() {}
+
+    handleGameId = () => {
+        if (this.state.gamesList.length > 0) {
+            this.setState({ gameId: this.state.gameId + 1 });
+        }
+    };
 
     render() {
         return (
@@ -37,12 +45,12 @@ class GamesList extends Component {
                 <div className="top-content">
                     <div className="top-leftside">
                         <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item">
+                            <ol className="breadcrumb">
+                                <li className="breadcrumb-item">
                                     <Link to="/">Home</Link>
                                 </li>
                                 <li
-                                    class="breadcrumb-item active"
+                                    className="breadcrumb-item active"
                                     aria-current="page"
                                 >
                                     Games
@@ -59,7 +67,10 @@ class GamesList extends Component {
                     <Navbar />
                     {/* Ternary here should go: if [games] display <Games /> component, if NOT, display the add new game sign*/}
                     {this.state.gamesList.length < 1 ? (
-                        <h3 className="main-middle">Add New Game</h3>
+                        <div>
+                            <h3 className="main-middle">Add New Game</h3>
+                            <Link to={`/game/${this.state.gameId}`}>+</Link>
+                        </div>
                     ) : (
                         this.state.gamesList.map((game, i) => (
                             <Link to={`/game/${game["id"]}`}>
