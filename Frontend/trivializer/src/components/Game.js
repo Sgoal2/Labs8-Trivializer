@@ -24,15 +24,7 @@ class Game extends Component {
         };
     }
 
-    handleTitle = e => {
-        this.setState({ [e.target.name]: e.target.value });
-    };
-
-    handleDescription = e => {
-        this.setState({ [e.target.name]: e.target.value });
-    };
-
-    handleDate = e => {
+    handleChange = e => {
         this.setState({ [e.target.name]: e.target.value });
     };
 
@@ -70,20 +62,20 @@ class Game extends Component {
                             name="gameTitle"
                             placeholder="Game Title"
                             value={this.state.gameTitle}
-                            onChange={this.handleTitle}
+                            onChange={this.handleChange}
                         />
                         <input
                             name="gameDescription"
                             placeholder="Game Description"
                             value={this.state.gameDescription}
-                            onChange={this.handleDescription}
+                            onChange={this.handleChange}
                         />
                         <input
                             type="date"
                             name="gameDate"
                             placeholder="mm/dd/yyyy"
                             value={this.state.gameDate}
-                            onChange={this.handleDate}
+                            onChange={this.handleChange}
                         />
                         <button>Print Answer Sheets</button>
                         <button>Print Answer Key</button>
