@@ -12,6 +12,59 @@ server.get("/", (req, res) => {
   res.json("App is currently functioning");
 });
 
+// Testing endpoints
+// Get all users table
+server.get("/users", (req, res) => {
+  db("Users")
+    .then(response => {
+      console.log(response);
+      res.status(200).json(response);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
+});
+
+// Get all games table
+server.get("/games", (req, res) => {
+  db("Games")
+    .then(response => {
+      console.log(response);
+      res.status(200).json(response);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
+});
+
+// Get all Rounds table
+server.get("/rounds", (req, res) => {
+  db("Rounds")
+    .then(response => {
+      console.log(response);
+      res.status(200).json(response);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
+});
+
+// Get all Questions table
+server.get("/questions", (req, res) => {
+  db("Questions")
+    .then(response => {
+      console.log(response);
+      res.status(200).json(response);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
+});
+
 // Add new user
 server.post("/register", (req, res) => {
   console.log("req.body: ", req.body);
@@ -72,7 +125,14 @@ server.post("/login", utilities.getUser, (req, res) => {
 server.post("/save", utilities.protected, async (req, res) => {
   // Transactions allow us to perform multiple database calls, and if one of them doesn't work,
   // roll back all other calls. Maintains data consistency
-  const { username, gamename, dateCreated, datePlayed, rounds } = req.body;
+  const {
+    username,
+    description,
+    gamename,
+    dateCreated,
+    datePlayed,
+    rounds
+  } = req.body;
 
   try {
     // Get user
@@ -90,37 +150,38 @@ server.post("/save", utilities.protected, async (req, res) => {
         name: gamename,
         date_created: dateCreated,
         date_played: datePlayed,
-        user_id: userId
+        user_id: userId,
+        description: description
       };
 
       let gameId = (await trx("Games").insert(gameInfo))[0];
 
-      console.log("gameID: ", gameId);
-
       // Enter Rounds in Database
-      const numberOfRounds = rounds.length;
+      const numberOfRounds = rounds.length; // First get number of rounds
+
+      // Then assemble what we're going to insert in rounds table
       const roundsPackage = rounds.map(round => {
         return {
           name: round.roundname,
+          category: round.category,
+          type: round.type,
+          difficulty: round.difficulty,
           number_of_questions: round.round.length,
           game_id: gameId
         };
       });
-      console.log("rounds: ", rounds);
-      console.log("numberOfRounds: ", numberOfRounds);
-
-      let roundsIds;
 
       let roundsPromises = roundsPackage.map(async round => {
+        // Insert all rounds into game
         return (await trx("Rounds").insert(round))[0];
       });
+
+      let roundsIds;
 
       await Promise.all(roundsPromises).then(values => {
         console.log("Promises!!: ", values);
         roundsIds = values;
       });
-
-      console.log("roundsPromises line 118: ", roundsPromises);
 
       // Insert questions/answers into database
       let questions = [];
@@ -141,8 +202,15 @@ server.post("/save", utilities.protected, async (req, res) => {
 
       let indicator = await trx("Questions").insert(questions);
 
-      console.log("Indicator: ", indicator);
-      res.status(200).json({ gameID: gameId });
+      const returnGame = {
+        gameId: gameId,
+        gamename: gamename,
+        description: description,
+        dateCreated: dateCreated,
+        datePlayed: datePlayed,
+        rounds: rounds
+      };
+      res.status(200).json(returnGame);
     });
   } catch (err) {
     console.log("err.message: ", err.message);
@@ -150,29 +218,34 @@ server.post("/save", utilities.protected, async (req, res) => {
   }
 });
 
-// ID for the game
-// Game title
-// how many games the user has ********
-// games array
-// game ID
-// Description
-// images
-// created at
-// played last
+// Get all games for a username passed in
+server.post(
+  "/games",
+  utilities.getUser,
+  utilities.protected,
+  async (req, res) => {
+    try {
+      const id = req.userIn.id; // This is set in utilities.getUser
+
+      let games = await db
+        .select(
+          "g.id as gameId",
+          "g.name as gamename",
+          "g.description as description",
+          "g.date_created as dateCreated",
+          "g.date_played as datePlayed"
+        )
+        .from("Users as u")
+        .leftJoin("Games as g", "g.user_id", "u.id")
+        .where("u.id", "=", id);
+
+      res.status(200).json(games);
+    } catch (err) {
+      res.status(500).json({ error: "Problem getting games" });
+    }
+  }
+);
 
 // users -> games -> rounds -> questions -> answers
 
-/*****  Still needed *****/
-
-// Authenticate ??
-
-// Get all games for a user (db-recipe-book)
-
-// Save a game to a user (db-recipe-book)
-
 module.exports = server;
-
-// What I need sent in to save
-// username
-// Game name
-// round (array)
