@@ -202,6 +202,7 @@ server.post("/save", utilities.protected, async (req, res) => {
       const returnGame = {
         gameId: gameId,
         gamename: gamename,
+        description: description,
         dateCreated: dateCreated,
         datePlayed: datePlayed,
         rounds: rounds
