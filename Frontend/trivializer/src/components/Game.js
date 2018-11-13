@@ -1,12 +1,34 @@
 import React, { Component } from "react";
 import Navbar from "./Navbar";
+import Rounds from "./Rounds";
 import { Link } from "react-router-dom";
 
 class Game extends Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            gameTitle: "",
+            gameDescription: "",
+            gameDate: "",
+            roundId: 0,
+            roundsList: [
+                {
+                    id: 0,
+                    title: "Round One",
+                    numberOfQs: 10,
+                    category: "",
+                    difficulty: "",
+                    type: ""
+                }
+            ]
+        };
     }
+
+    handleChange = e => {
+        this.setState({ [e.target.name]: e.target.value });
+    };
+
+    handleSaveGame = e => {};
 
     render() {
         return (
@@ -14,12 +36,12 @@ class Game extends Component {
                 <div className="top-content">
                     <div className="top-leftside">
                         <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item">
+                            <ol className="breadcrumb">
+                                <li className="breadcrumb-item">
                                     <Link to="/">Home</Link>
                                 </li>
                                 <li
-                                    class="breadcrumb-item active"
+                                    className="breadcrumb-item active"
                                     aria-current="page"
                                 >
                                     Games
@@ -36,15 +58,67 @@ class Game extends Component {
                     <Navbar />
                     <div>
                         <div>Logo</div>
-                        <input value="Game Title" />
-                        <input type="date" />
+                        <input
+                            name="gameTitle"
+                            placeholder="Game Title"
+                            value={this.state.gameTitle}
+                            onChange={this.handleChange}
+                        />
+                        <input
+                            name="gameDescription"
+                            placeholder="Game Description"
+                            value={this.state.gameDescription}
+                            onChange={this.handleChange}
+                        />
+                        <input
+                            type="date"
+                            name="gameDate"
+                            placeholder="mm/dd/yyyy"
+                            value={this.state.gameDate}
+                            onChange={this.handleChange}
+                        />
                         <button>Print Answer Sheets</button>
                         <button>Print Answer Key</button>
+                        <button>Save Game</button>
+
+                        {this.state.roundsList.length < 1 ? (
+                            <div>
+                                <h3 className="main-middle">Add New Round</h3>
+                                <Link to={`/round/${this.state.roundId}`}>
+                                    +
+                                </Link>
+                            </div>
+                        ) : (
+                            this.state.roundsList.map((round, i) => (
+                                <div>
+                                    <RoundDetails
+                                        key={round["id"]}
+                                        index={i}
+                                        round={round}
+                                    />
+                                </div>
+                            ))
+                        )}
+
+                        {this.state.roundsList.length > 1 ? (
+                            <div>
+                                <div>New Round</div>
+                                <button>+</button>
+                            </div>
+                        ) : null}
                     </div>
                 </div>
             </div>
         );
     }
+}
+
+function RoundDetails({ round }) {
+    return (
+        <div>
+            <Rounds round={round} />
+        </div>
+    );
 }
 
 export default Game;

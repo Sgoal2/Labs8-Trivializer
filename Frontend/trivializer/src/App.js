@@ -7,14 +7,9 @@ import Setting from "./components/Setting";
 import Invoices from "./components/Invoices";
 import Game from "./components/Game";
 import { Route, withRouter } from "react-router-dom";
-import { connect } from "react-redux";
-import { fetchReq } from "./actions";
+import Round from "./components/Round";
 
 class App extends Component {
-    componentDidMount() {
-        this.props.fetchReq();
-    }
-
     render() {
         return (
             <div className="App">
@@ -24,21 +19,10 @@ class App extends Component {
                 <Route path="/setting" component={Setting} />
                 <Route path="/invoices" component={Invoices} />
                 <Route path="/game/:id" component={Game} />
+                <Route path="/round/:id" component={Round} />
             </div>
         );
     }
 }
 
-const mapStateToProps = state => {
-    return {
-        questions: state.questions,
-        fetched: state.fetched
-    };
-};
-
-export default withRouter(
-    connect(
-        mapStateToProps,
-        { fetchReq }
-    )(App)
-);
+export default withRouter(App);
