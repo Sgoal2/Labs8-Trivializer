@@ -12,6 +12,59 @@ server.get("/", (req, res) => {
   res.json("App is currently functioning");
 });
 
+// Testing endpoints
+// Get all users table
+server.get("/users", (req, res) => {
+  db("Users")
+    .then(response => {
+      console.log(response);
+      res.status(200).json(response);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
+});
+
+// Get all games table
+server.get("/games", (req, res) => {
+  db("Games")
+    .then(response => {
+      console.log(response);
+      res.status(200).json(response);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
+});
+
+// Get all Rounds table
+server.get("/rounds", (req, res) => {
+  db("Rounds")
+    .then(response => {
+      console.log(response);
+      res.status(200).json(response);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
+});
+
+// Get all Questions table
+server.get("/questions", (req, res) => {
+  db("Questions")
+    .then(response => {
+      console.log(response);
+      res.status(200).json(response);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
+});
+
 // Add new user
 server.post("/register", (req, res) => {
   console.log("req.body: ", req.body);
@@ -72,7 +125,14 @@ server.post("/login", utilities.getUser, (req, res) => {
 server.post("/save", utilities.protected, async (req, res) => {
   // Transactions allow us to perform multiple database calls, and if one of them doesn't work,
   // roll back all other calls. Maintains data consistency
-  const { username, gamename, dateCreated, datePlayed, rounds } = req.body;
+  const {
+    username,
+    description,
+    gamename,
+    dateCreated,
+    datePlayed,
+    rounds
+  } = req.body;
 
   try {
     // Get user
@@ -90,7 +150,8 @@ server.post("/save", utilities.protected, async (req, res) => {
         name: gamename,
         date_created: dateCreated,
         date_played: datePlayed,
-        user_id: userId
+        user_id: userId,
+        description: description
       };
 
       let gameId = (await trx("Games").insert(gameInfo))[0];
@@ -165,6 +226,7 @@ server.post(
         .select(
           "g.id as gameId",
           "g.name as gamename",
+          "g.description as description",
           "g.date_created as dateCreated",
           "g.date_played as datePlayed"
         )
@@ -174,50 +236,7 @@ server.post(
 
       console.log("Games: ", games);
 
-      let rounds = await db
-        .select(
-          "r.game_id as gameId",
-          "r.name as roundname",
-          "r.number_of_questions"
-        )
-        .from("Games as g")
-        .leftJoin("Rounds as r", "g.id", "r.game_id");
-
-      console.log("Rounds: ", rounds);
-
-      let raw_data = await db
-        .select(
-          "u.username",
-          "g.id as gameId",
-          "g.name as gamename",
-          "g.date_created as dateCreated",
-          "g.date_played as datePlayed",
-          "r.name as roundname",
-          "r.number_of_questions",
-          "q.category",
-          "q.difficulty",
-          "q.type",
-          "q.question",
-          "q.correct_answer",
-          "q.incorrect_answers"
-        )
-        .from("Users as u")
-        .leftJoin("Games as g", "g.user_id", "u.id")
-        .leftJoin("Rounds as r", "g.id", "r.game_id")
-        .leftJoin("Questions as q", "r.id", "q.rounds_id")
-        .where("u.id", "=", id);
-
-      // let meoization = {}
-      // let games = {
-      //   username: raw_data[0].username,
-      //   games: [],
-      // }
-
-      // raw_data.forEach(questionBlock => {
-      //   if(questionBlock.gameId)
-      // })
-
-      res.status(200).json(raw_data);
+      res.status(200).json(games);
     } catch (err) {
       console.log("err.message: ", err.message);
       res.status(500).json({ error: "Problem getting games" });
