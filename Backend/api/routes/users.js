@@ -246,6 +246,20 @@ server.post(
   }
 );
 
+// Delete a round based on round name
+server.delete("/round/:id", utilities.protected, async (req, res) => {
+  const { id } = req.params;
+
+  db("Rounds")
+    .where({ id })
+    .del()
+    .then(id => {
+      res.status(200).json(`Round ${id} deleted`);
+    })
+    .catch(err => {
+      res.status(404).json(`Error deleting round ${id}`);
+    });
+});
 // users -> games -> rounds -> questions -> answers
 
 module.exports = server;
